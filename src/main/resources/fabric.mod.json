@@ -6,8 +6,8 @@
 	"description": "Semi-Hardcore mod",
 	"authors": ["nicochart"],
 	"contact": {
-		"homepage": "",
-		"sources": ""
+		"homepage": "https://github.com/nicochart/NotSoHardcore",
+		"sources": "https://github.com/nicochart/NotSoHardcore"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/notsohardcore/notsohardcore.png",
