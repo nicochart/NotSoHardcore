@@ -1,4 +1,7 @@
 {
   "key.notsohardcore.ability" : "Test Ability",
-  "category.notsohardcore" : "Test Keybinds"
+  "category.notsohardcore" : "Test Keybinds",
+  "gui.notsohardcore.info_screen" : "Not So Hardcore",
+  "gui.notsohardcore.info_screen.remaining_lives" : "Remaining lives :",
+  "gui.notsohardcore.info_screen.time_until_life_regain" : "Next live restore in :"
 }

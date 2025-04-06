@@ -1,6 +1,7 @@
 package fr.factionbedrock.notsohardcore.client.registry;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
+import fr.factionbedrock.notsohardcore.client.gui.InfoScreen;
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -28,6 +29,7 @@ public class NSHKeyBinds
             while (TEST_ABILITY_KEY.wasPressed()) {
                 if (client.player != null)
                 {
+                    client.setScreen(new InfoScreen(client.player));
                     NSHNetworking.sendPacketFromClient(NSHNetworking.USE_ABILITY_PACKET);
                 }
             }
