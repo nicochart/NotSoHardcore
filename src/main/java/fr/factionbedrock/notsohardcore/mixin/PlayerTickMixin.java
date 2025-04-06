@@ -34,15 +34,15 @@ public class PlayerTickMixin
         long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER);
         if (player.isCreative())
         {
-            if (lives != 3)
+            if (lives != NotSoHardcore.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIVES, 3);
+                player.getDataTracker().set(NSHTrackedData.LIVES, NotSoHardcore.MAX_LIVES);
             }
         }
-        else if (lives != 3)
+        else if (lives != NotSoHardcore.MAX_LIVES)
         {
             long currentTime = player.getServerWorld().getTime();
-            if (currentTime - liveRegainTimeMarker < 1000)
+            if (currentTime - liveRegainTimeMarker < NotSoHardcore.TIME_TO_REGAIN_LIVE)
             {
                 if (lives == 0 && !player.isSpectator())
                 {
@@ -51,14 +51,14 @@ public class PlayerTickMixin
             }
             else
             {
-                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / 1000);
+                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / NotSoHardcore.TIME_TO_REGAIN_LIVE);
                 if (lives == 0)
                 {
                     BlockPos spawnPos = player.getServerWorld().getSpawnPos();
                     player.teleport(player.getServerWorld(), spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
                     player.changeGameMode(GameMode.SURVIVAL);
                 }
-                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(3, lives + livePlayerCanRegain));
+                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(NotSoHardcore.MAX_LIVES, lives + livePlayerCanRegain));
                 player.getDataTracker().set(NSHTrackedData.LIVE_REGAIN_TIME_MARKER, currentTime);
             }
         }

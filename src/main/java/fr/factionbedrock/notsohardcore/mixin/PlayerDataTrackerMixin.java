@@ -1,5 +1,6 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
+import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +15,7 @@ public class PlayerDataTrackerMixin
 	@Inject(at = @At("RETURN"), method = "initDataTracker")
 	private void init(DataTracker.Builder builder, CallbackInfo info)
 	{
-		builder.add(NSHTrackedData.LIVES, 3);
+		builder.add(NSHTrackedData.LIVES, NotSoHardcore.MAX_LIVES);
 		builder.add(NSHTrackedData.LIVE_REGAIN_TIME_MARKER, (long)0);
 	}
 }

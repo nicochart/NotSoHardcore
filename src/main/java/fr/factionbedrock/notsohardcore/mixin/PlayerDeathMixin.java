@@ -1,5 +1,6 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
+import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,7 +20,7 @@ public class PlayerDeathMixin
         int previousLives = player.getDataTracker().get(NSHTrackedData.LIVES);
         if (previousLives > 0 && !player.isCreative() && !player.isSpectator())
         {
-            if (previousLives == 3)
+            if (previousLives == NotSoHardcore.MAX_LIVES)
             {
                 player.getDataTracker().set(NSHTrackedData.LIVE_REGAIN_TIME_MARKER, player.getServerWorld().getTime());
             }

@@ -1,6 +1,7 @@
 package fr.factionbedrock.notsohardcore;
 
 import fr.factionbedrock.notsohardcore.client.registry.NSHKeyBinds;
+import fr.factionbedrock.notsohardcore.config.*;
 import fr.factionbedrock.notsohardcore.packet.NSHData;
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHComponents;
@@ -20,8 +21,16 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+	public static NSHConfig CONFIG;
+	public static int MAX_LIVES;
+	public static int TIME_TO_REGAIN_LIVE;
+
 	@Override public void onInitialize()
 	{
+		CONFIG = NSHConfigLoader.loadConfig();
+		MAX_LIVES = CONFIG.maxLives;
+		TIME_TO_REGAIN_LIVE = CONFIG.timeToRegainLive;
+
 		NSHItems.load();
 		NSHComponents.load();
 		NSHTrackedData.load();
