@@ -3,12 +3,10 @@ package fr.factionbedrock.notsohardcore.packet;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
 public class NSHNetworking
 {
-    public static final NSHData USE_ABILITY_PACKET = new NSHData("use_ability", 0);
-    public static final NSHData RECEIVED_PACKET = new NSHData("received", 0);
+    public static final NSHData OPEN_INFO_SCREEN_PACKET = new NSHData("open_info_screen", 0);
 
     public static void sendPacketFromClient(NSHData payload)
     {
@@ -24,10 +22,9 @@ public class NSHNetworking
     {
         ServerPlayNetworking.registerGlobalReceiver(NSHData.ID, (payload, context) ->
         {
-            if (payload.name().equals(USE_ABILITY_PACKET.name()))
+            if (payload.name().equals(OPEN_INFO_SCREEN_PACKET.name()))
             {
-                context.player().sendMessage(Text.literal("Activated ability !"), false);
-                sendPacketFromServer(context.player(), RECEIVED_PACKET);
+                //context.player().sendMessage(Text.literal("Displaying info menu !"), false);
             }
         });
     }
@@ -36,10 +33,6 @@ public class NSHNetworking
     {
         ClientPlayNetworking.registerGlobalReceiver(NSHData.ID, (payload, context) ->
         {
-            if (payload.name().equals(RECEIVED_PACKET.name()))
-            {
-                context.player().sendMessage(Text.literal("Received packet from server !"), false);
-            }
         });
     }
 }

@@ -4,7 +4,6 @@ import fr.factionbedrock.notsohardcore.client.registry.NSHKeyBinds;
 import fr.factionbedrock.notsohardcore.config.*;
 import fr.factionbedrock.notsohardcore.packet.NSHData;
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
-import fr.factionbedrock.notsohardcore.registry.NSHComponents;
 import fr.factionbedrock.notsohardcore.registry.NSHItems;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.fabricmc.api.ClientModInitializer;
@@ -32,7 +31,6 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 		TIME_TO_REGAIN_LIVE = CONFIG.timeToRegainLive;
 
 		NSHItems.load();
-		NSHComponents.load();
 		NSHTrackedData.load();
 		PayloadTypeRegistry.playC2S().register(NSHData.ID, NSHData.CODEC);
 		NSHNetworking.registerServerReceiver();

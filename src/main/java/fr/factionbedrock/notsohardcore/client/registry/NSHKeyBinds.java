@@ -14,7 +14,7 @@ public class NSHKeyBinds
     public static final KeyBinding TEST_ABILITY_KEY = new KeyBinding(
             "key."+ NotSoHardcore.MOD_ID+".ability",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_G,
+            GLFW.GLFW_KEY_H,
             "category."+ NotSoHardcore.MOD_ID
     );
 
@@ -30,7 +30,7 @@ public class NSHKeyBinds
                 if (client.player != null)
                 {
                     client.setScreen(new InfoScreen(client.player));
-                    NSHNetworking.sendPacketFromClient(NSHNetworking.USE_ABILITY_PACKET);
+                    NSHNetworking.sendPacketFromClient(NSHNetworking.OPEN_INFO_SCREEN_PACKET);
                 }
             }
         });
