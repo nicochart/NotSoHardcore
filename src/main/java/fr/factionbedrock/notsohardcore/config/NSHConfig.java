@@ -4,4 +4,5 @@ public class NSHConfig
 {
     public int maxLives = 3;
     public int timeToRegainLive = 72000;
+    public boolean creativeResetsLiveCount = false;
 }

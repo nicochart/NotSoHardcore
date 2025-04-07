@@ -18,7 +18,7 @@ public class PlayerDeathMixin
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         int previousLives = player.getDataTracker().get(NSHTrackedData.LIVES);
-        if (previousLives > 0 && !player.isCreative() && !player.isSpectator())
+        if (previousLives > 0 && !player.isSpectator() && !(player.isCreative() && NotSoHardcore.CREATIVE_RESETS_LIVE_COUNT))
         {
             if (previousLives == NotSoHardcore.MAX_LIVES)
             {

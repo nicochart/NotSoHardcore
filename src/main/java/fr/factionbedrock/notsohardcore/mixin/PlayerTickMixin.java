@@ -31,8 +31,13 @@ public class PlayerTickMixin
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
+        if (lives > NotSoHardcore.MAX_LIVES)
+        {
+            player.getDataTracker().set(NSHTrackedData.LIVES, NotSoHardcore.MAX_LIVES);
+            lives = NotSoHardcore.MAX_LIVES;
+        }
         long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER);
-        if (player.isCreative())
+        if (player.isCreative() && NotSoHardcore.CREATIVE_RESETS_LIVE_COUNT)
         {
             if (lives != NotSoHardcore.MAX_LIVES)
             {
@@ -44,7 +49,7 @@ public class PlayerTickMixin
             long currentTime = player.getServerWorld().getTime();
             if (currentTime - liveRegainTimeMarker < NotSoHardcore.TIME_TO_REGAIN_LIVE)
             {
-                if (lives == 0 && !player.isSpectator())
+                if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
                     player.changeGameMode(GameMode.SPECTATOR);
                 }
