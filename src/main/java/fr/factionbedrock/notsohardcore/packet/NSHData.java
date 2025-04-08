@@ -8,7 +8,7 @@ import net.minecraft.network.packet.CustomPayload;
 
 public record NSHData(String name, int age) implements CustomPayload
 {
-    public static final CustomPayload.Id<NSHData> ID = new CustomPayload.Id<>(NotSoHardcore.id("data"));
+    public static final CustomPayload.Id<NSHData> ID = new CustomPayload.Id<>(NotSoHardcore.id("default_data"));
 
     public static final PacketCodec<RegistryByteBuf, NSHData> CODEC = PacketCodec.tuple(
             PacketCodecs.STRING, NSHData::name,

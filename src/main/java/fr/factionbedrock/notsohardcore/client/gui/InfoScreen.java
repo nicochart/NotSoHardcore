@@ -11,11 +11,15 @@ import net.minecraft.util.Formatting;
 public class InfoScreen extends Screen
 {
     private final PlayerEntity player;
+    private final int max_lives;
+    private final int time_to_regain_life;
 
-    public InfoScreen(PlayerEntity player)
+    public InfoScreen(PlayerEntity player, int max_lives, int time_to_regain_life)
     {
         super(Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen").formatted(Formatting.BOLD));
         this.player = player;
+        this.max_lives = max_lives;
+        this.time_to_regain_life = time_to_regain_life;
     }
 
     @Override public void render(DrawContext context, int mouseX, int mouseY, float delta)
@@ -28,13 +32,13 @@ public class InfoScreen extends Screen
         context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.remaining_lives"), this.width / 2, text_height, 0xFF0000);
 
         text_height+=10;
-        if (NotSoHardcore.MAX_LIVES < 21)
+        if (this.max_lives < 21)
         {
             int centerX = this.width / 2;
             int heartWidth = 7;
-            int totalWidth = heartWidth * NotSoHardcore.MAX_LIVES;
+            int totalWidth = heartWidth * this.max_lives;
             int startX = centerX - totalWidth / 2;
-            for (int i = 0; i < NotSoHardcore.MAX_LIVES; i++)
+            for (int i = 0; i < this.max_lives; i++)
             {
                 int color = (i < player.getDataTracker().get(NSHTrackedData.LIVES)) ? 0xFF0000 : 0x202020;
                 context.drawTextWithShadow(this.textRenderer, "♥", startX + i * heartWidth, text_height, color);
@@ -42,27 +46,27 @@ public class InfoScreen extends Screen
         }
         else
         {
-            context.drawCenteredTextWithShadow(this.textRenderer, player.getDataTracker().get(NSHTrackedData.LIVES) + " / " + NotSoHardcore.MAX_LIVES , this.width / 2, text_height, 0xFF0000);
+            context.drawCenteredTextWithShadow(this.textRenderer, player.getDataTracker().get(NSHTrackedData.LIVES) + " / " + this.max_lives , this.width / 2, text_height, 0xFF0000);
         }
 
 
-        if (player.getDataTracker().get(NSHTrackedData.LIVES) < NotSoHardcore.MAX_LIVES)
+        if (player.getDataTracker().get(NSHTrackedData.LIVES) < this.max_lives)
         {
             text_height+=20;
             context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_until_life_regain"), this.width / 2, text_height, 0xFFFFFF);
 
             text_height+=10;
-            long ticksToRegain = NotSoHardcore.TIME_TO_REGAIN_LIVE - (player.getWorld().getTime() - player.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER));
-            String timeUntilNextRegainString = NotSoHardcore.TIME_TO_REGAIN_LIVE != Integer.MAX_VALUE ? getTimeRemainingStringFromTicks(ticksToRegain) : "∞";
+            long ticksToRegain = this.time_to_regain_life - (player.getWorld().getTime() - player.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER));
+            String timeUntilNextRegainString = this.time_to_regain_life != Integer.MAX_VALUE ? getTimeRemainingStringFromTicks(ticksToRegain) : "∞";
             context.drawCenteredTextWithShadow(this.textRenderer, timeUntilNextRegainString, this.width / 2, text_height, 0xFFFFFF);
         }
 
         text_height+=20;
-        if (NotSoHardcore.TIME_TO_REGAIN_LIVE != Integer.MAX_VALUE)
+        if (this.time_to_regain_life != Integer.MAX_VALUE)
         {
             context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"), this.width / 2, text_height, 0xFFFFFF);
             text_height+=10;
-            context.drawCenteredTextWithShadow(this.textRenderer, getTimeRemainingStringFromTicks(NotSoHardcore.TIME_TO_REGAIN_LIVE), this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, getTimeRemainingStringFromTicks(this.time_to_regain_life), this.width / 2, text_height, 0xFFFFFF);
         }
         else
         {

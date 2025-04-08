@@ -1,15 +1,14 @@
 package fr.factionbedrock.notsohardcore;
 
+import fr.factionbedrock.notsohardcore.client.packet.NSHClientNetworking;
 import fr.factionbedrock.notsohardcore.client.registry.NSHKeyBinds;
 import fr.factionbedrock.notsohardcore.config.*;
-import fr.factionbedrock.notsohardcore.packet.NSHData;
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHItems;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 
 		NSHItems.load();
 		NSHTrackedData.load();
-		PayloadTypeRegistry.playC2S().register(NSHData.ID, NSHData.CODEC);
+		NSHNetworking.registerData();
 		NSHNetworking.registerServerReceiver();
 	}
 
@@ -42,8 +41,7 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 	{
 		NSHKeyBinds.registerKeybinds();
 		NSHKeyBinds.registerPressedInteractions();
-		PayloadTypeRegistry.playS2C().register(NSHData.ID, NSHData.CODEC);
-		NSHNetworking.registerClientReceiver();
+		NSHClientNetworking.registerClientReceiver();
 	}
 
 	public static Identifier id(String path) {return Identifier.of(MOD_ID, path);}
