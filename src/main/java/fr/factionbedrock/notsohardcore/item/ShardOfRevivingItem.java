@@ -9,7 +9,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -17,6 +19,15 @@ import java.util.List;
 public class ShardOfRevivingItem extends Item
 {
     public ShardOfRevivingItem(Settings settings) {super(settings);}
+
+    @Override public ActionResult use(World world, PlayerEntity user, Hand hand)
+    {
+        if (user.getDataTracker().get(NSHTrackedData.LIVES) < NotSoHardcore.MAX_LIVES)
+        {
+            return super.use(world, user, hand);
+        }
+        else {return ActionResult.PASS;}
+    }
 
     @Override public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user)
     {
