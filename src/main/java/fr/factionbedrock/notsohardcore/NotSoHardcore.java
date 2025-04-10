@@ -22,15 +22,16 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 
 	public static NSHConfig CONFIG;
 	public static int MAX_LIVES;
-	public static int TIME_TO_REGAIN_LIVE;
-	public static Boolean CREATIVE_RESETS_LIVE_COUNT;
+	public static int TIME_TO_REGAIN_LIFE;
+	public static Boolean CREATIVE_RESETS_LIFE_COUNT;
 
 	@Override public void onInitialize()
 	{
 		CONFIG = NSHConfigLoader.loadConfig();
 		MAX_LIVES = Math.max(CONFIG.maxLives, 1);
-		TIME_TO_REGAIN_LIVE = CONFIG.timeToRegainLive >= 0 ? CONFIG.timeToRegainLive : Integer.MAX_VALUE;
-		CREATIVE_RESETS_LIVE_COUNT = CONFIG.creativeResetsLiveCount;
+		TIME_TO_REGAIN_LIFE = CONFIG.timeToRegainLife >= 0 ? CONFIG.timeToRegainLife : Integer.MAX_VALUE;
+		CREATIVE_RESETS_LIFE_COUNT = CONFIG.creativeResetsLifeCount;
+		System.out.println("LOADED CONFIG : MAX_LIVES = "+MAX_LIVES+", TIME_TO_REGAIN_LIFE = "+TIME_TO_REGAIN_LIFE+", CREATIVE_RESETS_LIFE_COUNT = "+CREATIVE_RESETS_LIFE_COUNT);
 
 		NSHItems.load();
 		NSHTrackedData.load();

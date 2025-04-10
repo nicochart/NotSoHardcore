@@ -2,6 +2,7 @@ package fr.factionbedrock.notsohardcore.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -27,7 +28,12 @@ public class NSHConfigLoader
         }
 
         try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {return GSON.fromJson(reader, NSHConfig.class);}
-        catch (IOException e) {e.printStackTrace(); return new NSHConfig();}
+        catch (IOException | JsonParseException e)
+        {
+            e.printStackTrace();
+            NotSoHardcore.LOGGER.error("Failed to load Not So Hardcore config file, using default configuration instead");
+            return new NSHConfig();
+        }
     }
 
     public static void saveConfig(NSHConfig config)

@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 public class NSHNetworking
 {
     public static final NSHData OPEN_INFO_SCREEN_REQUEST_PACKET = new NSHData("open_info_screen_request", 0);
-    public static final NSHOpenInfoScreenData OPEN_INFO_SCREEN_PACKET = new NSHOpenInfoScreenData("open_info_screen", NotSoHardcore.MAX_LIVES, NotSoHardcore.TIME_TO_REGAIN_LIVE);
+    public static final NSHOpenInfoScreenData OPEN_INFO_SCREEN_PACKET = new NSHOpenInfoScreenData("open_info_screen", NotSoHardcore.MAX_LIVES, NotSoHardcore.TIME_TO_REGAIN_LIFE);
 
     public static void registerData()
     {

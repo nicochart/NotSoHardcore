@@ -56,7 +56,7 @@ public class InfoScreen extends Screen
             context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_until_life_regain"), this.width / 2, text_height, 0xFFFFFF);
 
             text_height+=10;
-            long ticksToRegain = this.time_to_regain_life - (player.getWorld().getTime() - player.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER));
+            long ticksToRegain = this.time_to_regain_life - (player.getWorld().getTime() - player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER));
             String timeUntilNextRegainString = this.time_to_regain_life != Integer.MAX_VALUE ? getTimeRemainingStringFromTicks(ticksToRegain) : "∞";
             context.drawCenteredTextWithShadow(this.textRenderer, timeUntilNextRegainString, this.width / 2, text_height, 0xFFFFFF);
         }

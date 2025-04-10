@@ -18,11 +18,11 @@ public class PlayerDeathMixin
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         int previousLives = player.getDataTracker().get(NSHTrackedData.LIVES);
-        if (previousLives > 0 && !player.isSpectator() && !(player.isCreative() && NotSoHardcore.CREATIVE_RESETS_LIVE_COUNT))
+        if (previousLives > 0 && !player.isSpectator() && !(player.isCreative() && NotSoHardcore.CREATIVE_RESETS_LIFE_COUNT))
         {
             if (previousLives == NotSoHardcore.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIVE_REGAIN_TIME_MARKER, player.getServerWorld().getTime());
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, player.getServerWorld().getTime());
             }
             player.getDataTracker().set(NSHTrackedData.LIVES, previousLives - 1);
         }
@@ -35,7 +35,7 @@ public class PlayerDeathMixin
 
         int lives = oldPlayer.getDataTracker().get(NSHTrackedData.LIVES);
         newPlayer.getDataTracker().set(NSHTrackedData.LIVES, lives);
-        long live_regain_timer = oldPlayer.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER);
-        newPlayer.getDataTracker().set(NSHTrackedData.LIVE_REGAIN_TIME_MARKER, live_regain_timer);
+        long live_regain_timer = oldPlayer.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
+        newPlayer.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, live_regain_timer);
     }
 }

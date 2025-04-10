@@ -32,8 +32,8 @@ public class PlayerTickMixin
             player.getDataTracker().set(NSHTrackedData.LIVES, NotSoHardcore.MAX_LIVES);
             lives = NotSoHardcore.MAX_LIVES;
         }
-        long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER);
-        if (player.isCreative() && NotSoHardcore.CREATIVE_RESETS_LIVE_COUNT)
+        long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
+        if (player.isCreative() && NotSoHardcore.CREATIVE_RESETS_LIFE_COUNT)
         {
             if (lives != NotSoHardcore.MAX_LIVES)
             {
@@ -43,7 +43,7 @@ public class PlayerTickMixin
         else if (lives != NotSoHardcore.MAX_LIVES)
         {
             long currentTime = player.getServerWorld().getTime();
-            if (currentTime - liveRegainTimeMarker < NotSoHardcore.TIME_TO_REGAIN_LIVE)
+            if (currentTime - liveRegainTimeMarker < NotSoHardcore.TIME_TO_REGAIN_LIFE)
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
@@ -52,7 +52,7 @@ public class PlayerTickMixin
             }
             else
             {
-                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / NotSoHardcore.TIME_TO_REGAIN_LIVE);
+                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / NotSoHardcore.TIME_TO_REGAIN_LIFE);
                 if (lives == 0)
                 {
                     BlockPos spawnPos = player.getServerWorld().getSpawnPos();
@@ -60,7 +60,7 @@ public class PlayerTickMixin
                     player.changeGameMode(GameMode.SURVIVAL);
                 }
                 player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(NotSoHardcore.MAX_LIVES, lives + livePlayerCanRegain));
-                player.getDataTracker().set(NSHTrackedData.LIVE_REGAIN_TIME_MARKER, currentTime);
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, currentTime);
             }
         }
     }

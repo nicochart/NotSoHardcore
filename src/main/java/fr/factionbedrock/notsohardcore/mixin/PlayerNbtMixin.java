@@ -25,7 +25,7 @@ public class PlayerNbtMixin
         }
         if (nbt.contains(live_regain_time_marker, NbtElement.LONG_TYPE))
         {
-            player.getDataTracker().set(NSHTrackedData.LIVE_REGAIN_TIME_MARKER, nbt.getLong(live_regain_time_marker));
+            player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, nbt.getLong(live_regain_time_marker));
         }
     }
 
@@ -34,6 +34,6 @@ public class PlayerNbtMixin
     {
         PlayerEntity player = (PlayerEntity) (Object) this;
         nbt.putInt(lives, player.getDataTracker().get(NSHTrackedData.LIVES));
-        nbt.putLong(live_regain_time_marker, player.getDataTracker().get(NSHTrackedData.LIVE_REGAIN_TIME_MARKER));
+        nbt.putLong(live_regain_time_marker, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER));
     }
 }
