@@ -13,8 +13,10 @@ public class NSHNetworking
     {
         PayloadTypeRegistry.playC2S().register(NSHData.ID, NSHData.CODEC);
         PayloadTypeRegistry.playC2S().register(NSHOpenInfoScreenData.ID, NSHOpenInfoScreenData.CODEC);
+        PayloadTypeRegistry.playC2S().register(NSHS2CSynchData.ID, NSHS2CSynchData.CODEC);
         PayloadTypeRegistry.playS2C().register(NSHData.ID, NSHData.CODEC);
         PayloadTypeRegistry.playS2C().register(NSHOpenInfoScreenData.ID, NSHOpenInfoScreenData.CODEC);
+        PayloadTypeRegistry.playS2C().register(NSHS2CSynchData.ID, NSHS2CSynchData.CODEC);
     }
 
     public static void registerServerReceiver()

@@ -3,6 +3,7 @@ package fr.factionbedrock.notsohardcore;
 import fr.factionbedrock.notsohardcore.client.packet.NSHClientNetworking;
 import fr.factionbedrock.notsohardcore.client.registry.NSHKeyBinds;
 import fr.factionbedrock.notsohardcore.config.*;
+import fr.factionbedrock.notsohardcore.events.NSHPlayerEvents;
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHItems;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
@@ -35,6 +36,7 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 		NSHTrackedData.load();
 		NSHNetworking.registerData();
 		NSHNetworking.registerServerReceiver();
+		NSHPlayerEvents.registerPlayerEvents();
 	}
 
 	@Override public void onInitializeClient()

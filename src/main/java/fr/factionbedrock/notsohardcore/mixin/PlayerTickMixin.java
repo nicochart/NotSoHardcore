@@ -2,10 +2,6 @@ package fr.factionbedrock.notsohardcore.mixin;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
-import fr.factionbedrock.notsohardcore.util.NSHHelper;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
