@@ -31,7 +31,7 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 		MAX_LIVES = Math.max(CONFIG.maxLives, 1);
 		TIME_TO_REGAIN_LIFE = CONFIG.timeToRegainLife >= 0 ? CONFIG.timeToRegainLife : Integer.MAX_VALUE;
 		CREATIVE_RESETS_LIFE_COUNT = CONFIG.creativeResetsLifeCount;
-		System.out.println("LOADED CONFIG : MAX_LIVES = "+MAX_LIVES+", TIME_TO_REGAIN_LIFE = "+TIME_TO_REGAIN_LIFE+", CREATIVE_RESETS_LIFE_COUNT = "+CREATIVE_RESETS_LIFE_COUNT);
+		ServerLoadedConfig.storeServerParams(MAX_LIVES, TIME_TO_REGAIN_LIFE, CREATIVE_RESETS_LIFE_COUNT);
 
 		NSHItems.load();
 		NSHTrackedData.load();

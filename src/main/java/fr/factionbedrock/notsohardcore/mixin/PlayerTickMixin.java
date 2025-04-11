@@ -1,6 +1,7 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
+import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -27,23 +28,23 @@ public class PlayerTickMixin
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
-        if (lives > NotSoHardcore.MAX_LIVES)
+        if (lives > ServerLoadedConfig.MAX_LIVES)
         {
-            player.getDataTracker().set(NSHTrackedData.LIVES, NotSoHardcore.MAX_LIVES);
-            lives = NotSoHardcore.MAX_LIVES;
+            player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
+            lives = ServerLoadedConfig.MAX_LIVES;
         }
         long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
-        if (player.isCreative() && NotSoHardcore.CREATIVE_RESETS_LIFE_COUNT)
+        if (player.isCreative() && ServerLoadedConfig.CREATIVE_RESETS_LIFE_COUNT)
         {
-            if (lives != NotSoHardcore.MAX_LIVES)
+            if (lives != ServerLoadedConfig.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIVES, NotSoHardcore.MAX_LIVES);
+                player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
             }
         }
-        else if (lives != NotSoHardcore.MAX_LIVES)
+        else if (lives != ServerLoadedConfig.MAX_LIVES)
         {
             long currentTime = player.getServerWorld().getTime();
-            if (currentTime - liveRegainTimeMarker < NotSoHardcore.TIME_TO_REGAIN_LIFE)
+            if (currentTime - liveRegainTimeMarker < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
@@ -52,14 +53,14 @@ public class PlayerTickMixin
             }
             else
             {
-                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / NotSoHardcore.TIME_TO_REGAIN_LIFE);
+                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
                 if (lives == 0)
                 {
                     BlockPos spawnPos = player.getServerWorld().getSpawnPos();
                     player.teleport(player.getServerWorld(), spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
                     player.changeGameMode(GameMode.SURVIVAL);
                 }
-                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(NotSoHardcore.MAX_LIVES, lives + livePlayerCanRegain));
+                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
                 player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, currentTime);
             }
         }
