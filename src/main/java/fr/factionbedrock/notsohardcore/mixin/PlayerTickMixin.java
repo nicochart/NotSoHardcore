@@ -4,6 +4,7 @@ import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
@@ -56,8 +57,12 @@ public class PlayerTickMixin
                 int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
                 if (lives == 0)
                 {
-                    BlockPos spawnPos = player.getServerWorld().getSpawnPos();
-                    player.teleport(player.getServerWorld(), spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
+                    BlockPos spawnPos = player.getSpawnPointPosition();
+                    ServerWorld serverWorld = player.getServerWorld();
+                    if (spawnPos == null) {spawnPos = serverWorld.getSpawnPos();}
+                    if (player.getSpawnPointDimension() != null) {serverWorld = player.server.getWorld(player.getSpawnPointDimension());}
+
+                    player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
                     player.changeGameMode(GameMode.SURVIVAL);
                 }
                 player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
