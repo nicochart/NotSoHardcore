@@ -14,7 +14,7 @@ public record NSHS2CSynchData(String name, int max_lives, int time_to_regain_lif
             PacketCodecs.STRING, NSHS2CSynchData::name,
             PacketCodecs.VAR_INT, NSHS2CSynchData::max_lives,
             PacketCodecs.VAR_INT, NSHS2CSynchData::time_to_regain_life,
-            PacketCodecs.BOOLEAN, NSHS2CSynchData::creative_resets_life_count,
+            PacketCodecs.BOOL, NSHS2CSynchData::creative_resets_life_count,
             PacketCodecs.VAR_INT, NSHS2CSynchData::lives,
             PacketCodecs.VAR_LONG, NSHS2CSynchData::live_regain_time_marker,
             NSHS2CSynchData::new);

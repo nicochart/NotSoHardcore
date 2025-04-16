@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -20,13 +21,13 @@ public class ShardOfRevivingItem extends Item
 {
     public ShardOfRevivingItem(Settings settings) {super(settings);}
 
-    @Override public ActionResult use(World world, PlayerEntity user, Hand hand)
+    @Override public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
     {
         if (user.getDataTracker().get(NSHTrackedData.LIVES) < ServerLoadedConfig.MAX_LIVES)
         {
             return super.use(world, user, hand);
         }
-        else {return ActionResult.PASS;}
+        else {return TypedActionResult.pass(user.getStackInHand(hand));}
     }
 
     @Override public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user)
