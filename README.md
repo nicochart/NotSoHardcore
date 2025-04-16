@@ -3,9 +3,9 @@ Semi-Hardcore Minecraft mod
 
 Hi, welcome to Not So Hardcore mod repository! :D
 
-This mod is primarily created for my personal use, but feel free to download it on CurseForge.
+This mod is primarily created for my personal use, but feel free to download it on CurseForge : https://www.curseforge.com/minecraft/mc-mods/not-so-hardore.
 
-If you need information, there will be a Wiki here on GitHub later.
+If you need information, there is a Wiki here on GitHub : https://github.com/nicochart/NotSoHardcore/wiki.
 
 If you want to chat about the mod or chat with me, come on discord! (My server: https://discord.gg/dthhGtn, my nickname: "nicochart").
 
