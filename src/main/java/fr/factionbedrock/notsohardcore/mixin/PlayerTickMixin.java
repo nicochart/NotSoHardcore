@@ -1,11 +1,9 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
-import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,11 +16,6 @@ import java.util.Set;
 @Mixin(ServerPlayerEntity.class)
 public class PlayerTickMixin
 {
-    private static final Identifier CLICK_SPEED_MODIFIER = NotSoHardcore.id("click_speed_modifier");
-    private static final Identifier CLICK_SCALE_MODIFIER = NotSoHardcore.id("click_scale_modifier");
-    private static final Identifier CLICK_JUMP_MODIFIER = NotSoHardcore.id("click_jump_modifier");
-    private static final Identifier CLICK_STEP_HEIGHT_MODIFIER = NotSoHardcore.id("click_step_height_modifier");
-
     @Inject(at = @At("RETURN"), method = "tick")
     private void onTick(CallbackInfo info)
     {
