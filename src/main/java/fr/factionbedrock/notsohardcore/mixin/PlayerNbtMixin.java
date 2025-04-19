@@ -1,5 +1,6 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
+import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -19,14 +20,8 @@ public class PlayerNbtMixin
     private void read(NbtCompound nbt, CallbackInfo info)
     {
         PlayerEntity player = (PlayerEntity) (Object) this;
-        if (nbt.contains(lives, NbtElement.INT_TYPE))
-        {
-            player.getDataTracker().set(NSHTrackedData.LIVES, nbt.getInt(lives));
-        }
-        if (nbt.contains(life_regain_time_marker, NbtElement.LONG_TYPE))
-        {
-            player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, nbt.getLong(life_regain_time_marker));
-        }
+        player.getDataTracker().set(NSHTrackedData.LIVES, nbt.getInt(lives, ServerLoadedConfig.MAX_LIVES));
+        player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, nbt.getLong(life_regain_time_marker, 0));
     }
 
     @Inject(at = @At("RETURN"), method = "writeCustomDataToNbt")

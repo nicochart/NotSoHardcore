@@ -2,6 +2,7 @@ package fr.factionbedrock.notsohardcore.item;
 
 import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -15,6 +16,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ShardOfRevivingItem extends Item
 {
@@ -42,9 +44,9 @@ public class ShardOfRevivingItem extends Item
         return super.finishUsing(stack, world, user);
     }
 
-    @Override public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type)
+    @Override public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type)
     {
-        tooltip.add(this.getDescription().formatted(Formatting.GRAY));
+        textConsumer.accept(this.getDescription().formatted(Formatting.GRAY));
     }
 
     public MutableText getDescription()
