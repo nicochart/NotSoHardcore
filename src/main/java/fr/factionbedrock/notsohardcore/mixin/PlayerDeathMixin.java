@@ -38,4 +38,5 @@ public class PlayerDeathMixin
         long live_regain_timer = oldPlayer.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
         newPlayer.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, live_regain_timer);
     }
+
 }
