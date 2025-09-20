@@ -15,6 +15,7 @@ public class PlayerNbtMixin
 {
     private static String lives = "lives";
     private static String life_regain_time_marker = "life_regain_time_marker";
+    private static String life_regain_realtime_time_marker = "life_regain_realtime_time_marker";
 
     @Inject(at = @At("RETURN"), method = "readCustomDataFromNbt")
     private void read(NbtCompound nbt, CallbackInfo info)
@@ -22,6 +23,7 @@ public class PlayerNbtMixin
         PlayerEntity player = (PlayerEntity) (Object) this;
         player.getDataTracker().set(NSHTrackedData.LIVES, nbt.getInt(lives, ServerLoadedConfig.MAX_LIVES));
         player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, nbt.getLong(life_regain_time_marker, 0));
+        player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, nbt.getLong(life_regain_realtime_time_marker, 0));
     }
 
     @Inject(at = @At("RETURN"), method = "writeCustomDataToNbt")
@@ -30,5 +32,6 @@ public class PlayerNbtMixin
         PlayerEntity player = (PlayerEntity) (Object) this;
         nbt.putInt(lives, player.getDataTracker().get(NSHTrackedData.LIVES));
         nbt.putLong(life_regain_time_marker, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER));
+        nbt.putLong(life_regain_realtime_time_marker, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER));
     }
 }

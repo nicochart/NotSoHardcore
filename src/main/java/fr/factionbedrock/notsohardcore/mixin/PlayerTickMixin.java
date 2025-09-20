@@ -41,7 +41,10 @@ public abstract class PlayerTickMixin
         }
         else if (lives != ServerLoadedConfig.MAX_LIVES)
         {
-            long currentTime = player.getServerWorld().getTime();
+            if (!ServerLoadedConfig.USE_REALTIME_REGAIN)
+            {
+                // Tick time tracking
+                long currentTime = player.getServerWorld().getTime();
             if (currentTime - liveRegainTimeMarker < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
@@ -64,6 +67,42 @@ public abstract class PlayerTickMixin
                 player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
                 player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, currentTime);
             }
+            }else
+            {
+                //Realtime mode
+                long marker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER); 
+
+                long now = System.currentTimeMillis();
+                long periodMillis = (long) ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS * 1000L;
+
+                if (now - marker < periodMillis)
+                {
+                    if (lives == 0 && !player.isSpectator() && !player.isCreative())
+                    {
+                        player.changeGameMode(GameMode.SPECTATOR);
+                    }
+                } else {
+                    int canRegain = (int) ((now -marker) / periodMillis);
+
+                    if (lives == 0)
+                    {
+                        // tp to spawn resued code
+                        // TODO: defined to as a reusable helper method
+                        ServerPlayerEntity.Respawn respawn = player.getRespawn();
+                        ServerWorld serverWorld = respawn != null ? player.server.getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getServerWorld();
+                        BlockPos spawnPos = respawn != null ? respawn.pos() : serverWorld.getSpawnPos();
+
+                        player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
+                        player.changeGameMode(GameMode.SURVIVAL);
+                    }
+
+                    player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + canRegain));
+                    long remainder = (now - marker) % periodMillis;
+
+                    player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, now -remainder);
+                }
+            }
+            
         }
     }
 }
