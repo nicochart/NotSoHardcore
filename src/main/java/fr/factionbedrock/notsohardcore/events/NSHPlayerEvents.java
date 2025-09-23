@@ -1,7 +1,7 @@
 package fr.factionbedrock.notsohardcore.events;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
-import fr.factionbedrock.notsohardcore.packet.NSHS2CSynchData;
+import fr.factionbedrock.notsohardcore.networking.NSHS2CSynchData;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;

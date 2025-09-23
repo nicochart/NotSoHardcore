@@ -1,4 +1,4 @@
-package fr.factionbedrock.notsohardcore.packet;
+package fr.factionbedrock.notsohardcore.networking;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 

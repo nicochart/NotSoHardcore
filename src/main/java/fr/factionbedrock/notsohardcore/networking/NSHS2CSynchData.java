@@ -1,4 +1,4 @@
-package fr.factionbedrock.notsohardcore.packet;
+package fr.factionbedrock.notsohardcore.networking;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import net.minecraft.network.RegistryByteBuf;

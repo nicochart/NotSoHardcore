@@ -1,7 +1,7 @@
-package fr.factionbedrock.notsohardcore.client.packet;
+package fr.factionbedrock.notsohardcore.client.networking;
 
 import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
-import fr.factionbedrock.notsohardcore.packet.NSHS2CSynchData;
+import fr.factionbedrock.notsohardcore.networking.NSHS2CSynchData;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;

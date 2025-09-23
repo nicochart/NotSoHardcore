@@ -1,10 +1,10 @@
 package fr.factionbedrock.notsohardcore;
 
-import fr.factionbedrock.notsohardcore.client.packet.NSHClientNetworking;
+import fr.factionbedrock.notsohardcore.client.networking.NSHClientNetworking;
 import fr.factionbedrock.notsohardcore.client.registry.NSHKeyBinds;
 import fr.factionbedrock.notsohardcore.config.*;
 import fr.factionbedrock.notsohardcore.events.NSHPlayerEvents;
-import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
+import fr.factionbedrock.notsohardcore.networking.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHItems;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.fabricmc.api.ClientModInitializer;
