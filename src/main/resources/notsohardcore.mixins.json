@@ -1,14 +1,17 @@
 {
-	"required": true,
-	"package": "fr.factionbedrock.notsohardcore.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"PlayerDataTrackerMixin",
-		"PlayerNbtMixin",
-		"PlayerTickMixin",
-		"PlayerDeathMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "fr.factionbedrock.notsohardcore.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerDataTrackerMixin",
+    "PlayerNbtMixin",
+    "PlayerTickMixin",
+    "PlayerDeathMixin"
+  ],
+  "client": [
+    "DeathScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

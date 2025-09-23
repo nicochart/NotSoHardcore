@@ -17,5 +17,6 @@ public class PlayerDataTrackerMixin
 	{
 		builder.add(NSHTrackedData.LIVES, NotSoHardcore.MAX_LIVES);
 		builder.add(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, (long)0);
+		builder.add(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, 0L);
 	}
 }

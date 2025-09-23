@@ -17,7 +17,14 @@ public class NSHClientNetworking
                 MinecraftClient client = MinecraftClient.getInstance();
                 client.player.getDataTracker().set(NSHTrackedData.LIVES, payload.lives());
                 client.player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, payload.live_regain_time_marker());
-                ServerLoadedConfig.storeServerParams(payload.max_lives(), payload.time_to_regain_life(), payload.creative_resets_life_count());
+                client.player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, payload.live_regain_realtime_time_marker());
+                ServerLoadedConfig.storeServerParams(
+                        payload.max_lives(),
+                        payload.time_to_regain_life(),
+                        payload.creative_resets_life_count(),
+                        payload.use_realtime(),
+                        payload.time_to_regain_life_seconds()
+                );
             }
         });
     }
