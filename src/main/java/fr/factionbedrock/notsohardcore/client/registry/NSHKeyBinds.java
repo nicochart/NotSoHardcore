@@ -29,7 +29,7 @@ public class NSHKeyBinds
             while (TEST_ABILITY_KEY.wasPressed()) {
                 if (client.player != null)
                 {
-                    client.setScreen(new InfoScreen(client.player, ServerLoadedConfig.MAX_LIVES, ServerLoadedConfig.TIME_TO_REGAIN_LIFE));
+                    client.setScreen(new InfoScreen(client.player, ServerLoadedConfig.MAX_LIVES, ServerLoadedConfig.TIME_TO_REGAIN_LIFE, ServerLoadedConfig.USE_REALTIME_REGAIN));
                 }
             }
         });
