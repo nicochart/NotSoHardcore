@@ -1,8 +1,8 @@
 package fr.factionbedrock.notsohardcore.client.gui;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
-import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
+import fr.factionbedrock.notsohardcore.util.NSHHelper;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
@@ -59,7 +59,7 @@ public class InfoScreen extends Screen
             context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_until_life_regain"), this.width / 2, text_height, 0xFFFFFF);
 
             text_height+=10;
-            String timeUntilNextRegainString = this.time_to_regain_life != Integer.MAX_VALUE ? getTimeStringFromSeconds(this.calculateSecondsToRegainLife(player)) : "∞";
+            String timeUntilNextRegainString = this.time_to_regain_life != Integer.MAX_VALUE ? NSHHelper.getTimeStringFromTicks(this.getTicksCountToRegainLife(player)) : "∞";
 
             context.drawCenteredTextWithShadow(this.textRenderer, timeUntilNextRegainString, this.width / 2, text_height, 0xFFFFFF);
              
@@ -68,10 +68,9 @@ public class InfoScreen extends Screen
         text_height+=20;
         if (this.time_to_regain_life != Integer.MAX_VALUE)
         {
-            String timeToRegainLife = this.use_realtime ? getTimeStringFromSeconds(ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS) : getTimeStringFromTicks(this.time_to_regain_life);
             context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"), this.width / 2, text_height, 0xFFFFFF);
             text_height += 10;
-            context.drawCenteredTextWithShadow(this.textRenderer, timeToRegainLife, this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, NSHHelper.getTimeStringFromTicks(this.time_to_regain_life), this.width / 2, text_height, 0xFFFFFF);
         }
         else
         {
@@ -81,42 +80,12 @@ public class InfoScreen extends Screen
 
     @Override public boolean shouldPause() {return false;}
 
-    private long calculateSecondsToRegainLife(PlayerEntity player)
+    private long getTicksCountToRegainLife(PlayerEntity player)
     {
-        if (!this.use_realtime)
-        {
-            long now = player.getWorld().getTime();
-            long marker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
-            long ticksToRegain = this.time_to_regain_life - (now - marker);
-            return ticksToRegain / 20;
-        }
-        else
-        {
-            long now = System.currentTimeMillis();
-            long marker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER);
-            return ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS - ((now - marker) / 1000L);
-        }
-    }
-
-    private static String getTimeStringFromTicks(long ticksToRegain)
-    {
-        int secondsToRegain = (int) (ticksToRegain / 20);
-        return getTimeStringFromSeconds(secondsToRegain);
-    }
-
-    private static String getTimeStringFromSeconds(long secondsToRegain)
-    {
-        long days = secondsToRegain / 86400;
-        long hours = (secondsToRegain % 86400) / 3600;
-        long minutes = (secondsToRegain % 3600) / 60;
-        long seconds = secondsToRegain % 60;
-
-        StringBuilder sb = new StringBuilder();
-        if (days > 0) sb.append(days).append("d ");
-        if (hours > 0 || days > 0) sb.append(hours).append("h ");
-        if (minutes > 0 || hours > 0 || days > 0) sb.append(minutes).append("m ");
-        sb.append(seconds).append("s");
-
-        return sb.toString().trim();
+        //dividing by 50 turns milliseconds into ticks
+        long now = NSHHelper.getCurrentTime(player, this.use_realtime);
+        long marker = NSHHelper.getLiveRegainTimeMarker(player, this.use_realtime);
+        long ticksToRegain = this.time_to_regain_life - (now - marker);
+        return ticksToRegain;
     }
 }

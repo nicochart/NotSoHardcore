@@ -26,7 +26,6 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
     public static int TIME_TO_REGAIN_LIFE;
     public static Boolean CREATIVE_RESETS_LIFE_COUNT;
     public static Boolean USE_REALTIME_REGAIN;
-    public static int TIME_TO_REGAIN_LIFE_SECONDS;
 
     @Override public void onInitialize()
     {
@@ -35,8 +34,7 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
         TIME_TO_REGAIN_LIFE = CONFIG.timeToRegainLife >= 0 ? CONFIG.timeToRegainLife : Integer.MAX_VALUE;
         CREATIVE_RESETS_LIFE_COUNT = CONFIG.creativeResetsLifeCount;
         USE_REALTIME_REGAIN = CONFIG.useRealtimeRegain;
-        TIME_TO_REGAIN_LIFE_SECONDS = CONFIG.timeToRegainLifeSeconds > 0 ? CONFIG.timeToRegainLifeSeconds : Integer.MAX_VALUE;
-        ServerLoadedConfig.storeServerParams(MAX_LIVES, TIME_TO_REGAIN_LIFE, CREATIVE_RESETS_LIFE_COUNT, USE_REALTIME_REGAIN, TIME_TO_REGAIN_LIFE_SECONDS);
+        ServerLoadedConfig.storeServerParams(MAX_LIVES, TIME_TO_REGAIN_LIFE, CREATIVE_RESETS_LIFE_COUNT, USE_REALTIME_REGAIN);
 
 		NSHItems.load();
 		NSHTrackedData.load();

@@ -2,18 +2,15 @@ package fr.factionbedrock.notsohardcore.mixin;
 
 import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
+import fr.factionbedrock.notsohardcore.util.NSHHelper;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Set;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class PlayerTickMixin
@@ -31,7 +28,7 @@ public abstract class PlayerTickMixin
             player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
             lives = ServerLoadedConfig.MAX_LIVES;
         }
-        long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
+
         if (player.isCreative() && ServerLoadedConfig.CREATIVE_RESETS_LIFE_COUNT)
         {
             if (lives != ServerLoadedConfig.MAX_LIVES)
@@ -41,69 +38,27 @@ public abstract class PlayerTickMixin
         }
         else if (lives != ServerLoadedConfig.MAX_LIVES)
         {
-            if (!ServerLoadedConfig.USE_REALTIME_REGAIN)
-            {
-                // Tick time tracking
-                long currentTime = player.getServerWorld().getTime();
-                if (currentTime - liveRegainTimeMarker < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
-                {
-                    if (lives == 0 && !player.isSpectator() && !player.isCreative())
-                    {
-                        player.changeGameMode(GameMode.SPECTATOR);
-                    }
-                }
-                else
-                {
-                    int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
-                    if (lives == 0)
-                    {
-                        ServerPlayerEntity.Respawn respawn = player.getRespawn();
-                        ServerWorld serverWorld = respawn != null ? player.server.getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getServerWorld();
-                        BlockPos spawnPos = respawn != null ? respawn.pos() : serverWorld.getSpawnPos();
+            //dividing by 50 turns milliseconds into ticks
+            long currentTime = NSHHelper.getCurrentTime(player, ServerLoadedConfig.USE_REALTIME_REGAIN);
+            long liveRegainTimeMarker = NSHHelper.getLiveRegainTimeMarker(player, ServerLoadedConfig.USE_REALTIME_REGAIN);
 
-                        player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
-                        player.changeGameMode(GameMode.SURVIVAL);
-                    }
-                    player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
-                    player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, currentTime);
+            if (currentTime - liveRegainTimeMarker < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
+            {
+                if (lives == 0 && !player.isSpectator() && !player.isCreative())
+                {
+                    player.changeGameMode(GameMode.SPECTATOR);
                 }
             }
             else
             {
-                //Realtime mode
-                long marker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER); 
-
-                long now = System.currentTimeMillis();
-                long periodMillis = (long) ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS * 1000L;
-
-                if (now - marker < periodMillis)
+                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
+                if (lives == 0)
                 {
-                    if (lives == 0 && !player.isSpectator() && !player.isCreative())
-                    {
-                        player.changeGameMode(GameMode.SPECTATOR);
-                    }
+                    NSHHelper.respawnPlayer(player);
                 }
-                else
-                {
-                    int canRegain = (int) ((now - marker) / periodMillis);
-
-                    if (lives == 0)
-                    {
-                        // tp to spawn resued code
-                        // TODO: defined to as a reusable helper method
-                        ServerPlayerEntity.Respawn respawn = player.getRespawn();
-                        ServerWorld serverWorld = respawn != null ? player.server.getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getServerWorld();
-                        BlockPos spawnPos = respawn != null ? respawn.pos() : serverWorld.getSpawnPos();
-
-                        player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
-                        player.changeGameMode(GameMode.SURVIVAL);
-                    }
-
-                    player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + canRegain));
-                    long remainder = (now - marker) % periodMillis;
-
-                    player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, now -remainder);
-                }
+                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, NSHHelper.getCurrentTime(player, false));
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis());
             }
         }
     }

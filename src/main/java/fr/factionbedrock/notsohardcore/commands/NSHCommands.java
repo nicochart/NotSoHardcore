@@ -3,11 +3,13 @@ package fr.factionbedrock.notsohardcore.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.config.NSHConfigLoader;
 import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
 import fr.factionbedrock.notsohardcore.packet.NSHS2CSynchData;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
+import fr.factionbedrock.notsohardcore.util.NSHHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.command.CommandManager;
@@ -27,7 +29,7 @@ public final class NSHCommands
     private static void registerImpl(CommandDispatcher<ServerCommandSource> dispatcher, net.minecraft.registry.RegistryWrapper.WrapperLookup registryAccess, CommandManager.RegistrationEnvironment env) {
         dispatcher.register(
                 literal("nsh").requires(src -> src.hasPermissionLevel(2))
-                        .then(literal("realtime")
+                        .then(literal("useRealtime")
                                 .then(argument("value", BoolArgumentType.bool())
                                         .executes(ctx -> {
                                             boolean value = BoolArgumentType.getBool(ctx, "value");
@@ -51,37 +53,33 @@ public final class NSHCommands
                                 )
                         )
                         .then(literal("cooldown")
-                                .then(literal("seconds")
-                                        .then(argument("value", IntegerArgumentType.integer(1))
-                                                .executes(ctx -> {
-                                                    int value = IntegerArgumentType.getInteger(ctx, "value");
-                                                    NotSoHardcore.CONFIG.timeToRegainLifeSeconds = value;
-                                                    applyAndSave(ctx.getSource());
-                                                    ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLifeSeconds = " + value), true);
-                                                    return 1;
-                                                })
-                                        )
-                                )
-                                .then(literal("ticks")
-                                        .then(argument("value", IntegerArgumentType.integer(1))
-                                                .executes(ctx -> {
-                                                    int value = IntegerArgumentType.getInteger(ctx, "value");
-                                                    NotSoHardcore.CONFIG.timeToRegainLife = value;
-                                                    applyAndSave(ctx.getSource());
-                                                    ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLife (ticks) = " + value), true);
-                                                    return 1;
-                                                })
-                                        )
-                                )
+                                .then(cooldownArgument("ticks", 1))
+                                .then(cooldownArgument("seconds", 20))
+                                .then(cooldownArgument("minutes", 1200))
+                                .then(cooldownArgument("hours", 72000))
+                                .then(cooldownArgument("days", 1728000))
                         )
                         .then(literal("show").executes(ctx -> {
                             ctx.getSource().sendFeedback(() -> Text.literal("maxLives = " + NotSoHardcore.MAX_LIVES), false);
                             ctx.getSource().sendFeedback(() -> Text.literal("useRealtimeRegain = " + ServerLoadedConfig.USE_REALTIME_REGAIN), false);
-                            ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLife (ticks) = " + ServerLoadedConfig.TIME_TO_REGAIN_LIFE), false);
-                            ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLifeSeconds = " + ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS), false);
+                            ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLife = " + ServerLoadedConfig.TIME_TO_REGAIN_LIFE + " ticks = " + NSHHelper.getTimeStringFromTicks(ServerLoadedConfig.TIME_TO_REGAIN_LIFE)), false);
                             return 1;
                         }))
         );
+    }
+
+    private static ArgumentBuilder<ServerCommandSource, ?> cooldownArgument(String timeUnit, int multiplierToTick)
+    {
+        return literal(timeUnit)
+                .then(argument("value", IntegerArgumentType.integer(1))
+                        .executes(ctx -> {
+                            int value = IntegerArgumentType.getInteger(ctx, "value");
+                            NotSoHardcore.CONFIG.timeToRegainLife = value * multiplierToTick;
+                            applyAndSave(ctx.getSource());
+                            ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLife = " + value + " " + timeUnit +" = " + NSHHelper.getTimeStringFromTicks((long) value * multiplierToTick)), true);
+                            return 1;
+                        })
+                );
     }
 
     private static void applyAndSave(ServerCommandSource src)
@@ -91,7 +89,6 @@ public final class NSHCommands
         NotSoHardcore.TIME_TO_REGAIN_LIFE = NotSoHardcore.CONFIG.timeToRegainLife >= 0 ? NotSoHardcore.CONFIG.timeToRegainLife : Integer.MAX_VALUE;
         NotSoHardcore.CREATIVE_RESETS_LIFE_COUNT = NotSoHardcore.CONFIG.creativeResetsLifeCount;
         NotSoHardcore.USE_REALTIME_REGAIN = NotSoHardcore.CONFIG.useRealtimeRegain;
-        NotSoHardcore.TIME_TO_REGAIN_LIFE_SECONDS = NotSoHardcore.CONFIG.timeToRegainLifeSeconds > 0 ? NotSoHardcore.CONFIG.timeToRegainLifeSeconds : Integer.MAX_VALUE;
 
         // Persist to disk
         NSHConfigLoader.saveConfig(NotSoHardcore.CONFIG);
@@ -101,8 +98,7 @@ public final class NSHCommands
                 NotSoHardcore.MAX_LIVES,
                 NotSoHardcore.TIME_TO_REGAIN_LIFE,
                 NotSoHardcore.CREATIVE_RESETS_LIFE_COUNT,
-                NotSoHardcore.USE_REALTIME_REGAIN,
-                NotSoHardcore.TIME_TO_REGAIN_LIFE_SECONDS
+                NotSoHardcore.USE_REALTIME_REGAIN
         );
 
         // Broadcast new values to players
@@ -116,9 +112,8 @@ public final class NSHCommands
                         NotSoHardcore.TIME_TO_REGAIN_LIFE,
                         NotSoHardcore.CREATIVE_RESETS_LIFE_COUNT,
                         p.getDataTracker().get(NSHTrackedData.LIVES),
-                        p.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER),
+                        p.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER),
                         NotSoHardcore.USE_REALTIME_REGAIN,
-                        NotSoHardcore.TIME_TO_REGAIN_LIFE_SECONDS,
                         p.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER)
                 ));
             }

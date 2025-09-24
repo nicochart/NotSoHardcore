@@ -22,13 +22,8 @@ public class PlayerDeathMixin
         {
             if (previousLives == ServerLoadedConfig.MAX_LIVES)
             {
-                if (ServerLoadedConfig.USE_REALTIME_REGAIN)
-                {
-                    player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis());
-                }else
-                {
-                    player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, player.getServerWorld().getTime());
-                }
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis());
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, player.getServerWorld().getTime());
             }
             player.getDataTracker().set(NSHTrackedData.LIVES, previousLives - 1);
         }
@@ -44,8 +39,8 @@ public class PlayerDeathMixin
 
         int lives = oldPlayer.getDataTracker().get(NSHTrackedData.LIVES);
         newPlayer.getDataTracker().set(NSHTrackedData.LIVES, lives);
-        long live_regain_timer = oldPlayer.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
-        newPlayer.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, live_regain_timer);
+        long live_regain_timer = oldPlayer.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER);
+        newPlayer.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, live_regain_timer);
     }
 
 }
