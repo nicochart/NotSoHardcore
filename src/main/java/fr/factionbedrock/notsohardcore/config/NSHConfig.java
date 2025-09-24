@@ -2,11 +2,9 @@ package fr.factionbedrock.notsohardcore.config;
 
 public class NSHConfig
 {
-    public int maxLives = 3;
-    public int timeToRegainLife = 72000;
-    public boolean creativeResetsLifeCount = false;
-    // Optional realtime-based regain (off by default). When enabled, lives
-    // regain based on wall-clock seconds instead of in-game ticks.
-    public boolean useRealtimeRegain = false;
-    public int timeToRegainLifeSeconds = 3600; // 1 hour
+    public int maxLives = 3; //max lives a player can get
+    public int timeToRegainLife = 72000; //time to regain life (ticks)
+    public boolean creativeResetsLifeCount = false; //true = if a player is in creative game-mode, his life count is reset to maxLives
+    public boolean useRealtimeRegain = false; //true = realtime-based regain instead of in-game server ticks, solving offline regain problem in singleplayer
+    public int timeToRegainLifeSeconds = 3600; //time to regain life (seconds) - used only if useRealtimeRegain = true
 }

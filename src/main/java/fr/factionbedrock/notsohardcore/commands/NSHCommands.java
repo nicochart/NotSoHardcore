@@ -18,12 +18,11 @@ import net.minecraft.text.Text;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public final class NSHCommands {
+public final class NSHCommands
+{
     private NSHCommands() {}
 
-    public static void register() {
-        CommandRegistrationCallback.EVENT.register(NSHCommands::registerImpl);
-    }
+    public static void register() {CommandRegistrationCallback.EVENT.register(NSHCommands::registerImpl);}
 
     private static void registerImpl(CommandDispatcher<ServerCommandSource> dispatcher, net.minecraft.registry.RegistryWrapper.WrapperLookup registryAccess, CommandManager.RegistrationEnvironment env) {
         dispatcher.register(
@@ -85,7 +84,8 @@ public final class NSHCommands {
         );
     }
 
-    private static void applyAndSave(ServerCommandSource src) {
+    private static void applyAndSave(ServerCommandSource src)
+    {
         // Recompute effective values from CONFIG
         NotSoHardcore.MAX_LIVES = Math.max(NotSoHardcore.CONFIG.maxLives, 1);
         NotSoHardcore.TIME_TO_REGAIN_LIFE = NotSoHardcore.CONFIG.timeToRegainLife >= 0 ? NotSoHardcore.CONFIG.timeToRegainLife : Integer.MAX_VALUE;
@@ -106,8 +106,10 @@ public final class NSHCommands {
         );
 
         // Broadcast new values to players
-        if (src.getServer() != null) {
-            for (ServerPlayerEntity p : src.getServer().getPlayerManager().getPlayerList()) {
+        if (src.getServer() != null)
+        {
+            for (ServerPlayerEntity p : src.getServer().getPlayerManager().getPlayerList())
+            {
                 ServerPlayNetworking.send(p, new NSHS2CSynchData(
                         "sync_nsh_data",
                         NotSoHardcore.MAX_LIVES,
@@ -123,13 +125,13 @@ public final class NSHCommands {
         }
     }
 
-    private static void clampAllPlayersLives(ServerCommandSource src, int maxLives) {
+    private static void clampAllPlayersLives(ServerCommandSource src, int maxLives)
+    {
         if (src.getServer() == null) return;
-        for (ServerPlayerEntity p : src.getServer().getPlayerManager().getPlayerList()) {
+        for (ServerPlayerEntity p : src.getServer().getPlayerManager().getPlayerList())
+        {
             int lives = p.getDataTracker().get(NSHTrackedData.LIVES);
-            if (lives > maxLives) {
-                p.getDataTracker().set(NSHTrackedData.LIVES, maxLives);
-            }
+            if (lives > maxLives) {p.getDataTracker().set(NSHTrackedData.LIVES, maxLives);}
         }
     }
 }

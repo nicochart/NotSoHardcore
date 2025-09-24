@@ -79,39 +79,29 @@ public class InfoScreen extends Screen
         text_height+=20;
         if (ServerLoadedConfig.USE_REALTIME_REGAIN)
         {
-            context.drawCenteredTextWithShadow(this.textRenderer,
-            Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"),
-            this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"), this.width / 2, text_height, 0xFFFFFF);
             text_height += 10;
 
             if (ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS != Integer.MAX_VALUE)
             {
-                context.drawCenteredTextWithShadow(this.textRenderer,
-                formatSeconds(ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS),
-                this.width / 2, text_height, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(this.textRenderer, formatSeconds(ServerLoadedConfig.TIME_TO_REGAIN_LIFE_SECONDS), this.width / 2, text_height, 0xFFFFFF);
             }
             else 
             {
-                context.drawCenteredTextWithShadow(this.textRenderer,
-                Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.no_life_regain_over_time"),
-                this.width / 2, text_height, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.no_life_regain_over_time"), this.width / 2, text_height, 0xFFFFFF);
             }
-        } else
+        }
+        else
         {
             if (this.time_to_regain_life != Integer.MAX_VALUE)
             {
-                context.drawCenteredTextWithShadow(this.textRenderer,
-                Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"),
-                this.width / 2, text_height, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"), this.width / 2, text_height, 0xFFFFFF);
                 text_height += 10;
-                
-                context.drawCenteredTextWithShadow(this.textRenderer,
-                getTimeRemainingStringFromTicks(this.time_to_regain_life),
-                this.width / 2, text_height, 0xFFFFFF);
-            }else {
-                context.drawCenteredTextWithShadow(this.textRenderer,
-                Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.no_life_regain_over_time"),
-                this.width / 2, text_height, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(this.textRenderer, getTimeRemainingStringFromTicks(this.time_to_regain_life), this.width / 2, text_height, 0xFFFFFF);
+            }
+            else
+            {
+                context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.no_life_regain_over_time"), this.width / 2, text_height, 0xFFFFFF);
             }
         }
 
@@ -136,16 +126,17 @@ public class InfoScreen extends Screen
         return sb.toString().trim();
     }
 
-    private static String formatSeconds(long secondsToRegain) {
-    long days = secondsToRegain / 86400;
-    long hours = (secondsToRegain % 86400) / 3600;
-    long minutes = (secondsToRegain % 3600) / 60;
-    long seconds = secondsToRegain % 60;
-    StringBuilder sb = new StringBuilder();
-    if (days > 0) sb.append(days).append("d ");
-    if (hours > 0 || days > 0) sb.append(hours).append("h ");
-    if (minutes > 0 || hours > 0 || days > 0) sb.append(minutes).append("m ");
-    sb.append(seconds).append("s");
-    return sb.toString().trim();
+    private static String formatSeconds(long secondsToRegain)
+    {
+        long days = secondsToRegain / 86400;
+        long hours = (secondsToRegain % 86400) / 3600;
+        long minutes = (secondsToRegain % 3600) / 60;
+        long seconds = secondsToRegain % 60;
+        StringBuilder sb = new StringBuilder();
+        if (days > 0) sb.append(days).append("d ");
+        if (hours > 0 || days > 0) sb.append(hours).append("h ");
+        if (minutes > 0 || hours > 0 || days > 0) sb.append(minutes).append("m ");
+        sb.append(seconds).append("s");
+        return sb.toString().trim();
     }
 }

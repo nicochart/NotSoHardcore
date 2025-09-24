@@ -25,7 +25,6 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
     public static int MAX_LIVES;
     public static int TIME_TO_REGAIN_LIFE;
     public static Boolean CREATIVE_RESETS_LIFE_COUNT;
-    // New realtime regain configuration (server-synced)
     public static Boolean USE_REALTIME_REGAIN;
     public static int TIME_TO_REGAIN_LIFE_SECONDS;
 
@@ -35,25 +34,15 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
         MAX_LIVES = Math.max(CONFIG.maxLives, 1);
         TIME_TO_REGAIN_LIFE = CONFIG.timeToRegainLife >= 0 ? CONFIG.timeToRegainLife : Integer.MAX_VALUE;
         CREATIVE_RESETS_LIFE_COUNT = CONFIG.creativeResetsLifeCount;
-        // Realtime regain params
         USE_REALTIME_REGAIN = CONFIG.useRealtimeRegain;
         TIME_TO_REGAIN_LIFE_SECONDS = CONFIG.timeToRegainLifeSeconds > 0 ? CONFIG.timeToRegainLifeSeconds : Integer.MAX_VALUE;
-
-        // Publish server-side effective params (including realtime mode)
-        ServerLoadedConfig.storeServerParams(
-                MAX_LIVES,
-                TIME_TO_REGAIN_LIFE,
-                CREATIVE_RESETS_LIFE_COUNT,
-                USE_REALTIME_REGAIN,
-                TIME_TO_REGAIN_LIFE_SECONDS);
+        ServerLoadedConfig.storeServerParams(MAX_LIVES, TIME_TO_REGAIN_LIFE, CREATIVE_RESETS_LIFE_COUNT, USE_REALTIME_REGAIN, TIME_TO_REGAIN_LIFE_SECONDS);
 
 		NSHItems.load();
 		NSHTrackedData.load();
         NSHNetworking.registerData();
         NSHNetworking.registerServerReceiver();
         NSHPlayerEvents.registerPlayerEvents();
-
-        // Register in-game commands (singleplayer/integrated server compatible)
         NSHCommands.register();
     }
 

@@ -13,11 +13,12 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
 @Mixin(DeathScreen.class)
-public abstract class DeathScreenMixin {
-
+public abstract class DeathScreenMixin
+{
     @Inject(method = "init", at = @At("TAIL"))
 
-    private void nsh$addRespawnButton(CallbackInfo ci) {
+    private void nsh$addRespawnButton(CallbackInfo ci)
+    {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc == null || mc.player == null) return;
 
@@ -40,7 +41,5 @@ public abstract class DeathScreenMixin {
 
             ((Screen)(Object)this).addDrawableChild(respawn);
         }
-
-        
     }
 }
