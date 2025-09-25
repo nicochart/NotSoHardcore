@@ -15,15 +15,15 @@ import java.nio.file.Path;
 public class NSHConfigLoader
 {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve(NotSoHardcore.MOD_ID);
-    private static final Path CONFIG_PATH = CONFIG_FOLDER.resolve("config.json");
+    protected static final Path CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve(NotSoHardcore.MOD_ID);
+    protected static final Path CONFIG_PATH = CONFIG_FOLDER.resolve("config.json");
 
     public static NSHConfig loadConfig()
     {
         if (!Files.exists(CONFIG_PATH))
         {
             NSHConfig defaultConfig = new NSHConfig();
-            saveConfig(defaultConfig);
+            NSHConfigSaver.saveConfig(defaultConfig);
             return defaultConfig;
         }
 
@@ -36,13 +36,10 @@ public class NSHConfigLoader
         }
     }
 
-    public static void saveConfig(NSHConfig config)
+    //Sending a NSHS2CSynchData packet will be necessary after calling this (see NSHNetworking "sendS2CSync" methods)
+    @Deprecated public static void initLocalAndServerConfig()
     {
-        try
-        {
-            Files.createDirectories(CONFIG_FOLDER);
-            try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {GSON.toJson(config, writer);}
-        }
-        catch (IOException e) {e.printStackTrace();}
+        LoadedConfig.Local.initLocalLoadedConfig();
+        LoadedConfig.Server.storeParams(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN);
     }
 }

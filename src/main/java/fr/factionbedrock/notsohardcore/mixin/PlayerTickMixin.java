@@ -1,6 +1,6 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
-import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
+import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import fr.factionbedrock.notsohardcore.util.NSHHelper;
 import net.minecraft.nbt.NbtCompound;
@@ -23,26 +23,26 @@ public abstract class PlayerTickMixin
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
-        if (lives > ServerLoadedConfig.MAX_LIVES)
+        if (lives > LoadedConfig.Server.MAX_LIVES)
         {
-            player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
-            lives = ServerLoadedConfig.MAX_LIVES;
+            player.getDataTracker().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
+            lives = LoadedConfig.Server.MAX_LIVES;
         }
 
-        if (player.isCreative() && ServerLoadedConfig.CREATIVE_RESETS_LIFE_COUNT)
+        if (player.isCreative() && LoadedConfig.Server.CREATIVE_RESETS_LIFE_COUNT)
         {
-            if (lives != ServerLoadedConfig.MAX_LIVES)
+            if (lives != LoadedConfig.Server.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
+                player.getDataTracker().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
             }
         }
-        else if (lives != ServerLoadedConfig.MAX_LIVES)
+        else if (lives != LoadedConfig.Server.MAX_LIVES)
         {
             //dividing by 50 turns milliseconds into ticks
-            long currentTime = NSHHelper.getCurrentTime(player, ServerLoadedConfig.USE_REALTIME_REGAIN);
-            long liveRegainTimeMarker = NSHHelper.getLiveRegainTimeMarker(player, ServerLoadedConfig.USE_REALTIME_REGAIN);
+            long currentTime = NSHHelper.getCurrentTime(player, LoadedConfig.Server.USE_REALTIME_REGAIN);
+            long liveRegainTimeMarker = NSHHelper.getLiveRegainTimeMarker(player, LoadedConfig.Server.USE_REALTIME_REGAIN);
 
-            if (currentTime - liveRegainTimeMarker < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
+            if (currentTime - liveRegainTimeMarker < LoadedConfig.Server.TIME_TO_REGAIN_LIFE)
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
@@ -51,12 +51,12 @@ public abstract class PlayerTickMixin
             }
             else
             {
-                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
+                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / LoadedConfig.Server.TIME_TO_REGAIN_LIFE);
                 if (lives == 0)
                 {
                     NSHHelper.respawnPlayer(player);
                 }
-                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
+                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(LoadedConfig.Server.MAX_LIVES, lives + livePlayerCanRegain));
                 player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, NSHHelper.getCurrentTime(player, false));
                 player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis());
             }

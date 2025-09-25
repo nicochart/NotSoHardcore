@@ -21,20 +21,9 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
     
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static NSHConfig CONFIG;
-    public static int MAX_LIVES;
-    public static int TIME_TO_REGAIN_LIFE;
-    public static Boolean CREATIVE_RESETS_LIFE_COUNT;
-    public static Boolean USE_REALTIME_REGAIN;
-
     @Override public void onInitialize()
     {
-        CONFIG = NSHConfigLoader.loadConfig();
-        MAX_LIVES = Math.max(CONFIG.maxLives, 1);
-        TIME_TO_REGAIN_LIFE = CONFIG.timeToRegainLife >= 0 ? CONFIG.timeToRegainLife : Integer.MAX_VALUE;
-        CREATIVE_RESETS_LIFE_COUNT = CONFIG.creativeResetsLifeCount;
-        USE_REALTIME_REGAIN = CONFIG.useRealtimeRegain;
-        ServerLoadedConfig.storeServerParams(MAX_LIVES, TIME_TO_REGAIN_LIFE, CREATIVE_RESETS_LIFE_COUNT, USE_REALTIME_REGAIN);
+        NSHConfigLoader.initLocalAndServerConfig();
 
 		NSHItems.load();
 		NSHTrackedData.load();
@@ -50,6 +39,14 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 		NSHKeyBinds.registerPressedInteractions();
 		NSHClientNetworking.registerClientReceiver();
 	}
+
+    public static void computeValuesFromConfig()
+    {
+        LoadedConfig.Local.MAX_LIVES = Math.max(LoadedConfig.Local.CONFIG.maxLives, 1);
+        LoadedConfig.Local.TIME_TO_REGAIN_LIFE = LoadedConfig.Local.CONFIG.timeToRegainLife >= 0 ? LoadedConfig.Local.CONFIG.timeToRegainLife : Integer.MAX_VALUE;
+        LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT = LoadedConfig.Local.CONFIG.creativeResetsLifeCount;
+        LoadedConfig.Local.USE_REALTIME_REGAIN = LoadedConfig.Local.CONFIG.useRealtimeRegain;
+    }
 
 	public static Identifier id(String path) {return Identifier.of(MOD_ID, path);}
 }

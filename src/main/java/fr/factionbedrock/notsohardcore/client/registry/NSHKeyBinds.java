@@ -2,7 +2,7 @@ package fr.factionbedrock.notsohardcore.client.registry;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.client.gui.InfoScreen;
-import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
+import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
@@ -29,7 +29,7 @@ public class NSHKeyBinds
             while (TEST_ABILITY_KEY.wasPressed()) {
                 if (client.player != null)
                 {
-                    client.setScreen(new InfoScreen(client.player, ServerLoadedConfig.MAX_LIVES, ServerLoadedConfig.TIME_TO_REGAIN_LIFE, ServerLoadedConfig.USE_REALTIME_REGAIN));
+                    client.setScreen(new InfoScreen(client.player, LoadedConfig.Server.MAX_LIVES, LoadedConfig.Server.TIME_TO_REGAIN_LIFE, LoadedConfig.Server.USE_REALTIME_REGAIN));
                 }
             }
         });
