@@ -25,27 +25,32 @@ public class NSHConfigSaver
     //On dedicated servers, after using any of these, the client's "LoadedConfig.Server" will be outdated. Need sync !
     public static void updateMaxLives(int maxLives)
     {
-        updateConfig(maxLives, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN);
+        updateConfig(maxLives, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN, LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS);
     }
 
     public static void updateTimeToRegainLife(int timeToRegainLife)
     {
-        updateConfig(LoadedConfig.Local.MAX_LIVES, timeToRegainLife, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN);
+        updateConfig(LoadedConfig.Local.MAX_LIVES, timeToRegainLife, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN, LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS);
     }
 
     public static void updateCreativeResetsLifeCount(boolean creativeResetsLifeCount)
     {
-        updateConfig(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, creativeResetsLifeCount, LoadedConfig.Local.USE_REALTIME_REGAIN);
+        updateConfig(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, creativeResetsLifeCount, LoadedConfig.Local.USE_REALTIME_REGAIN, LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS);
     }
 
     public static void updateUseRealtimeRegain(boolean useRealtimeRegain)
     {
-        updateConfig(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, useRealtimeRegain);
+        updateConfig(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, useRealtimeRegain, LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS);
     }
 
-    public static void updateConfig(int maxLives, int timeToRegainLife, boolean creativeResetsLifeCount, boolean useRealtimeRegain)
+    public static void updateAlwaysRenderHardcoreHearts(boolean alwaysRenderHardcoreHearts)
     {
-        NSHConfig newConfig = new NSHConfig(maxLives, timeToRegainLife, creativeResetsLifeCount, useRealtimeRegain);
+        updateConfig(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN, alwaysRenderHardcoreHearts);
+    }
+
+    public static void updateConfig(int maxLives, int timeToRegainLife, boolean creativeResetsLifeCount, boolean useRealtimeRegain, boolean alwaysRenderHardcoreHearts)
+    {
+        NSHConfig newConfig = new NSHConfig(maxLives, timeToRegainLife, creativeResetsLifeCount, useRealtimeRegain, alwaysRenderHardcoreHearts);
         saveConfig(newConfig);
         NSHConfigLoader.initLocalAndServerConfig();
     }

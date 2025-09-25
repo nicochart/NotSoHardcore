@@ -10,7 +10,8 @@
   ],
   "client": [
     "ModifyDeathScreenMinecraftClientArgsMixin",
-    "ModifyDeathScreenClientNetworkArgsMixin"
+    "ModifyDeathScreenClientNetworkArgsMixin",
+    "InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1

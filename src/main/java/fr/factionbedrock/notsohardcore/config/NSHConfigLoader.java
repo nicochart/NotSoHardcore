@@ -40,6 +40,6 @@ public class NSHConfigLoader
     @Deprecated public static void initLocalAndServerConfig()
     {
         LoadedConfig.Local.initLocalLoadedConfig();
-        LoadedConfig.Server.storeParams(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN);
+        LoadedConfig.Server.storeParams(LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, LoadedConfig.Local.USE_REALTIME_REGAIN, LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS);
     }
 }

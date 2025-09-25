@@ -13,6 +13,7 @@ public class LoadedConfig
         public static int TIME_TO_REGAIN_LIFE;
         public static Boolean CREATIVE_RESETS_LIFE_COUNT;
         public static Boolean USE_REALTIME_REGAIN;
+        public static Boolean ALWAYS_RENDER_HARDCORE_HEARTS;
 
         public static void initLocalLoadedConfig()
         {
@@ -26,6 +27,7 @@ public class LoadedConfig
             TIME_TO_REGAIN_LIFE = Local.CONFIG.timeToRegainLife >= 0 ? Local.CONFIG.timeToRegainLife : Integer.MAX_VALUE;
             CREATIVE_RESETS_LIFE_COUNT = Local.CONFIG.creativeResetsLifeCount;
             USE_REALTIME_REGAIN = Local.CONFIG.useRealtimeRegain;
+            ALWAYS_RENDER_HARDCORE_HEARTS = Local.CONFIG.alwaysRenderHardcoreHearts;
         }
     }
 
@@ -40,19 +42,21 @@ public class LoadedConfig
         public static int TIME_TO_REGAIN_LIFE;
         public static Boolean CREATIVE_RESETS_LIFE_COUNT;
         public static Boolean USE_REALTIME_REGAIN;
+        public static Boolean ALWAYS_RENDER_HARDCORE_HEARTS;
 
-        protected static void storeParams(int maxLives, int timeToRegainLife, boolean creativeResetsLifeCount, boolean useRealtimeRegain)
+        protected static void storeParams(int maxLives, int timeToRegainLife, boolean creativeResetsLifeCount, boolean useRealtimeRegain, boolean alwaysRenderHardcoreHearts)
         {
             MAX_LIVES = maxLives;
             TIME_TO_REGAIN_LIFE = timeToRegainLife;
             CREATIVE_RESETS_LIFE_COUNT = creativeResetsLifeCount;
             USE_REALTIME_REGAIN = useRealtimeRegain;
+            ALWAYS_RENDER_HARDCORE_HEARTS = alwaysRenderHardcoreHearts;
         }
     }
 
     //Never call this, send a NSHS2CSynchData packet instead (see NSHNetworking "sendS2CSync" methods)
-    @Deprecated public static void overrideServerParams(int maxLives, int timeToRegainLife, boolean creativeResetsLifeCount, boolean useRealtimeRegain)
+    @Deprecated public static void overrideServerParams(int maxLives, int timeToRegainLife, boolean creativeResetsLifeCount, boolean useRealtimeRegain, boolean alwaysRenderHardcoreHearts)
     {
-        Server.storeParams(maxLives, timeToRegainLife, creativeResetsLifeCount, useRealtimeRegain);
+        Server.storeParams(maxLives, timeToRegainLife, creativeResetsLifeCount, useRealtimeRegain, alwaysRenderHardcoreHearts);
     }
 }

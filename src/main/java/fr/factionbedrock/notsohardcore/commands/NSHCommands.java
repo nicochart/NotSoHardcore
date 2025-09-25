@@ -49,6 +49,17 @@ public final class NSHCommands
                                         })
                                 )
                         )
+                        .then(literal("alwaysRenderHardcoreHearts")
+                                .then(argument("value", BoolArgumentType.bool())
+                                        .executes(ctx -> {
+                                            boolean value = BoolArgumentType.getBool(ctx, "value");
+                                            NSHConfigSaver.updateAlwaysRenderHardcoreHearts(value);
+                                            NSHNetworking.sendS2CSync(ctx.getSource().getServer());
+                                            ctx.getSource().sendFeedback(() -> Text.literal("alwaysRenderHardcoreHearts = " + value), true);
+                                            return 1;
+                                        })
+                                )
+                        )
                         .then(literal("maxLives")
                                 .then(argument("value", IntegerArgumentType.integer(1, 1000))
                                         .executes(ctx -> {
@@ -73,6 +84,7 @@ public final class NSHCommands
                             ctx.getSource().sendFeedback(() -> Text.literal("useRealtimeRegain = " + LoadedConfig.Server.USE_REALTIME_REGAIN), false);
                             ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLife = " + LoadedConfig.Server.TIME_TO_REGAIN_LIFE + " ticks = " + NSHHelper.getTimeStringFromTicks(LoadedConfig.Server.TIME_TO_REGAIN_LIFE)), false);
                             ctx.getSource().sendFeedback(() -> Text.literal("creativeResetsLifeCount = " + LoadedConfig.Server.CREATIVE_RESETS_LIFE_COUNT), false);
+                            ctx.getSource().sendFeedback(() -> Text.literal("alwaysRenderHardcoreHearts = " + LoadedConfig.Server.ALWAYS_RENDER_HARDCORE_HEARTS), false);
                             return 1;
                         }))
         );

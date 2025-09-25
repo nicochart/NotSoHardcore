@@ -7,7 +7,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.network.packet.CustomPayload.Id;
 
-public record NSHS2CSynchData(String name, int max_lives, int time_to_regain_life, boolean creative_resets_life_count, int lives, long live_regain_time_marker, boolean use_realtime, long live_regain_realtime_time_marker) implements CustomPayload
+public record NSHS2CSynchData(String name, int max_lives, int time_to_regain_life, boolean creative_resets_life_count, int lives, long live_regain_time_marker, boolean use_realtime, long live_regain_realtime_time_marker, boolean always_render_hardcore_hearts) implements CustomPayload
 {
     public static final Id<NSHS2CSynchData> ID = new Id<>(NotSoHardcore.id("s2c_sync_data"));
 
@@ -20,6 +20,7 @@ public record NSHS2CSynchData(String name, int max_lives, int time_to_regain_lif
             PacketCodecs.VAR_LONG, NSHS2CSynchData::live_regain_time_marker,
             PacketCodecs.BOOLEAN, NSHS2CSynchData::use_realtime,
             PacketCodecs.VAR_LONG, NSHS2CSynchData::live_regain_realtime_time_marker,
+            PacketCodecs.BOOLEAN, NSHS2CSynchData::always_render_hardcore_hearts,
             NSHS2CSynchData::new
     );
 

@@ -19,7 +19,7 @@ public class NSHClientNetworking
                 client.player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, payload.live_regain_time_marker());
                 client.player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, payload.live_regain_realtime_time_marker());
                 //If on integrated server (single-player), the local config is used. If on dedicated server, the server config is used.
-                LoadedConfig.overrideServerParams(payload.max_lives(), payload.time_to_regain_life(), payload.creative_resets_life_count(), payload.use_realtime());
+                LoadedConfig.overrideServerParams(payload.max_lives(), payload.time_to_regain_life(), payload.creative_resets_life_count(), payload.use_realtime(), payload.always_render_hardcore_hearts());
             }
         });
     }

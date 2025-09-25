@@ -36,7 +36,7 @@ public class NSHNetworking
     public static void sendS2CSync(ServerPlayerEntity player)
     {
         //The packet is sent from server, so calling LoadedConfig.Local or LoadedConfig.Server is the same.
-        ServerPlayNetworking.send(player, new NSHS2CSynchData("sync_nsh_data", LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, player.getDataTracker().get(NSHTrackedData.LIVES), player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER), LoadedConfig.Local.USE_REALTIME_REGAIN, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER)));
+        ServerPlayNetworking.send(player, new NSHS2CSynchData("sync_nsh_data", LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, player.getDataTracker().get(NSHTrackedData.LIVES), player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER), LoadedConfig.Local.USE_REALTIME_REGAIN, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER), LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS));
     }
 
     public static void registerServerReceiver()
