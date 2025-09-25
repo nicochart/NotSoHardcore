@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 
-import static fr.factionbedrock.notsohardcore.config.NSHConfigLoader.CONFIG_FOLDER;
-import static fr.factionbedrock.notsohardcore.config.NSHConfigLoader.CONFIG_PATH;
-import static net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil.GSON;
+import static fr.factionbedrock.notsohardcore.config.NSHConfigLoader.*;
 
 public class NSHConfigSaver
 {

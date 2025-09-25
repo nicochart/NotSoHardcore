@@ -14,7 +14,7 @@ import java.nio.file.Path;
 
 public class NSHConfigLoader
 {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     protected static final Path CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve(NotSoHardcore.MOD_ID);
     protected static final Path CONFIG_PATH = CONFIG_FOLDER.resolve("config.json");
 
