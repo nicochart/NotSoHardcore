@@ -72,6 +72,7 @@ public final class NSHCommands
                             ctx.getSource().sendFeedback(() -> Text.literal("maxLives = " + LoadedConfig.Server.MAX_LIVES), false);
                             ctx.getSource().sendFeedback(() -> Text.literal("useRealtimeRegain = " + LoadedConfig.Server.USE_REALTIME_REGAIN), false);
                             ctx.getSource().sendFeedback(() -> Text.literal("timeToRegainLife = " + LoadedConfig.Server.TIME_TO_REGAIN_LIFE + " ticks = " + NSHHelper.getTimeStringFromTicks(LoadedConfig.Server.TIME_TO_REGAIN_LIFE)), false);
+                            ctx.getSource().sendFeedback(() -> Text.literal("creativeResetsLifeCount = " + LoadedConfig.Server.CREATIVE_RESETS_LIFE_COUNT), false);
                             return 1;
                         }))
         );

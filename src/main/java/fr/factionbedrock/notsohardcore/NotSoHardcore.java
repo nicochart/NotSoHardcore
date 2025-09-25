@@ -40,13 +40,5 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 		NSHClientNetworking.registerClientReceiver();
 	}
 
-    public static void computeValuesFromConfig()
-    {
-        LoadedConfig.Local.MAX_LIVES = Math.max(LoadedConfig.Local.CONFIG.maxLives, 1);
-        LoadedConfig.Local.TIME_TO_REGAIN_LIFE = LoadedConfig.Local.CONFIG.timeToRegainLife >= 0 ? LoadedConfig.Local.CONFIG.timeToRegainLife : Integer.MAX_VALUE;
-        LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT = LoadedConfig.Local.CONFIG.creativeResetsLifeCount;
-        LoadedConfig.Local.USE_REALTIME_REGAIN = LoadedConfig.Local.CONFIG.useRealtimeRegain;
-    }
-
 	public static Identifier id(String path) {return Identifier.of(MOD_ID, path);}
 }
