@@ -15,8 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class PlayerTickMixin
 {
-    @Shadow public abstract void readCustomDataFromNbt(NbtCompound nbt);
-
     @Inject(at = @At("RETURN"), method = "tick")
     private void onTick(CallbackInfo info)
     {

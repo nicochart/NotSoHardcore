@@ -19,8 +19,8 @@ public class NSHHelper
 {
     public static void runFunction(ServerPlayerEntity user, String functionName)
     {
-        MinecraftServer server = user.server;
-        ServerWorld world = user.getServerWorld();
+        MinecraftServer server = user.getServer();
+        ServerWorld world = user.getWorld();
         Identifier functionId = NotSoHardcore.id(functionName);
 
         Optional<CommandFunction<ServerCommandSource>> mcFunction = server.getCommandFunctionManager().getFunction(functionId);
@@ -34,7 +34,7 @@ public class NSHHelper
     public static void respawnPlayer(ServerPlayerEntity player)
     {
         ServerPlayerEntity.Respawn respawn = player.getRespawn();
-        ServerWorld serverWorld = respawn != null ? player.server.getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getServerWorld();
+        ServerWorld serverWorld = respawn != null ? player.getServer().getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getWorld();
         BlockPos spawnPos = respawn != null ? respawn.pos() : serverWorld.getSpawnPos();
 
         player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);

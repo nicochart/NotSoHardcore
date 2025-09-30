@@ -25,7 +25,7 @@ public class NSHPlayerEvents
             int lives = newPlayer.getDataTracker().get(NSHTrackedData.LIVES);
             if (lives > 0 && !newPlayer.isCreative())
             {
-                newPlayer.server.execute(() -> newPlayer.changeGameMode(GameMode.SURVIVAL));
+                newPlayer.getServer().execute(() -> newPlayer.changeGameMode(GameMode.SURVIVAL));
             }
         });
     }

@@ -7,6 +7,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Colors;
 import net.minecraft.util.Formatting;
 
 public class InfoScreen extends Screen
@@ -27,12 +28,10 @@ public class InfoScreen extends Screen
 
     @Override public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
-        this.renderBackground(context, mouseX, mouseY, delta);
-
         int text_height = 20;
-        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, text_height, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, text_height, Colors.WHITE);
         text_height+=30;
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.remaining_lives"), this.width / 2, text_height, 0xFF0000);
+        context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.remaining_lives"), this.width / 2, text_height, Colors.RED);
 
         text_height+=10;
         if (this.max_lives < 21)
@@ -43,38 +42,38 @@ public class InfoScreen extends Screen
             int startX = centerX - totalWidth / 2;
             for (int i = 0; i < this.max_lives; i++)
             {
-                int color = (i < player.getDataTracker().get(NSHTrackedData.LIVES)) ? 0xFF0000 : 0x202020;
+                int color = (i < player.getDataTracker().get(NSHTrackedData.LIVES)) ? Colors.RED : Colors.DARK_GRAY;
                 context.drawTextWithShadow(this.textRenderer, "♥", startX + i * heartWidth, text_height, color);
             }
         }
         else
         {
-            context.drawCenteredTextWithShadow(this.textRenderer, player.getDataTracker().get(NSHTrackedData.LIVES) + " / " + this.max_lives , this.width / 2, text_height, 0xFF0000);
+            context.drawCenteredTextWithShadow(this.textRenderer, player.getDataTracker().get(NSHTrackedData.LIVES) + " / " + this.max_lives , this.width / 2, text_height, Colors.RED);
         }
 
 
         if (player.getDataTracker().get(NSHTrackedData.LIVES) < this.max_lives)
         {
             text_height+=20;
-            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_until_life_regain"), this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_until_life_regain"), this.width / 2, text_height, Colors.WHITE);
 
             text_height+=10;
             String timeUntilNextRegainString = this.time_to_regain_life != Integer.MAX_VALUE ? NSHHelper.getTimeStringFromTicks(this.getTicksCountToRegainLife(player)) : "∞";
 
-            context.drawCenteredTextWithShadow(this.textRenderer, timeUntilNextRegainString, this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, timeUntilNextRegainString, this.width / 2, text_height, Colors.WHITE);
              
         }
 
         text_height+=20;
         if (this.time_to_regain_life != Integer.MAX_VALUE)
         {
-            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"), this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.time_to_regain_life"), this.width / 2, text_height, Colors.WHITE);
             text_height += 10;
-            context.drawCenteredTextWithShadow(this.textRenderer, NSHHelper.getTimeStringFromTicks(this.time_to_regain_life), this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, NSHHelper.getTimeStringFromTicks(this.time_to_regain_life), this.width / 2, text_height, Colors.WHITE);
         }
         else
         {
-            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.no_life_regain_over_time"), this.width / 2, text_height, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("gui."+NotSoHardcore.MOD_ID+".info_screen.no_life_regain_over_time"), this.width / 2, text_height, Colors.WHITE);
         }
     }
 

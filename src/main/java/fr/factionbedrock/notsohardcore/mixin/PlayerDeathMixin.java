@@ -23,7 +23,7 @@ public class PlayerDeathMixin
             if (previousLives == LoadedConfig.Server.MAX_LIVES)
             {
                 player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis());
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, player.getServerWorld().getTime());
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, player.getWorld().getTime());
             }
             player.getDataTracker().set(NSHTrackedData.LIVES, previousLives - 1);
         }
