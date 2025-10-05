@@ -1,36 +1,16 @@
 package fr.factionbedrock.notsohardcore.util;
 
-import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.function.CommandFunction;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
 
-import java.util.Optional;
 import java.util.Set;
 
 public class NSHHelper
 {
-    public static void runFunction(ServerPlayerEntity user, String functionName)
-    {
-        MinecraftServer server = user.getServer();
-        ServerWorld world = user.getWorld();
-        Identifier functionId = NotSoHardcore.id(functionName);
-
-        Optional<CommandFunction<ServerCommandSource>> mcFunction = server.getCommandFunctionManager().getFunction(functionId);
-
-        mcFunction.ifPresent(function -> {
-            ServerCommandSource source = server.getCommandSource().withEntity(user).withWorld(world).withPosition(user.getPos()).withSilent();
-            server.getCommandFunctionManager().execute(function, source);
-        });
-    }
-
     public static void respawnPlayer(ServerPlayerEntity player)
     {
         ServerPlayerEntity.Respawn respawn = player.getRespawn();
