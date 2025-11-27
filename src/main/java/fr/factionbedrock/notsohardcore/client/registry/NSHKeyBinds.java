@@ -15,7 +15,7 @@ public class NSHKeyBinds
             "key."+ NotSoHardcore.MOD_ID+".ability",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_H,
-            "category."+ NotSoHardcore.MOD_ID
+            KeyBinding.Category.MISC
     );
 
     public static void registerKeybinds()

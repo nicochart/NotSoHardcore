@@ -14,8 +14,8 @@ public class NSHHelper
     public static void respawnPlayer(ServerPlayerEntity player)
     {
         ServerPlayerEntity.Respawn respawn = player.getRespawn();
-        ServerWorld serverWorld = respawn != null ? player.getServer().getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getWorld();
-        BlockPos spawnPos = respawn != null ? respawn.pos() : serverWorld.getSpawnPos();
+        ServerWorld serverWorld = respawn != null ? player.getEntityWorld().getServer().getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getEntityWorld();
+        BlockPos spawnPos = respawn != null ? respawn.respawnData().getPos() : serverWorld.getSpawnPoint().getPos();
 
         player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
         player.changeGameMode(GameMode.SURVIVAL);
@@ -23,7 +23,7 @@ public class NSHHelper
 
     public static long getCurrentTime(PlayerEntity player, boolean useRealTime)
     {
-        return useRealTime ? System.currentTimeMillis() / 50L : player.getWorld().getTime();
+        return useRealTime ? System.currentTimeMillis() / 50L : player.getEntityWorld().getTime();
     }
 
     public static long getLiveRegainTimeMarker(PlayerEntity player, boolean useRealTime)
