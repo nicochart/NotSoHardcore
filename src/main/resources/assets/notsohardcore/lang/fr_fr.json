@@ -2,7 +2,7 @@
   "item.notsohardcore.shard_of_reviving" : "Éclat de Renaissance",
   "item.notsohardcore.shard_of_reviving.desc" : "Éclat imprégné du pouvoir de rennaître une fois de plus après la mort.",
   "key.notsohardcore.ability" : "Ouvrir le menu d'informations Not So Hardcore",
-  "category.notsohardcore" : "Contrôles Not So Hardcore",
+  "key.category.notsohardcore.notsohardcore" : "Contrôles Not So Hardcore",
   "gui.notsohardcore.info_screen" : "Not So Hardcore",
   "gui.notsohardcore.info_screen.remaining_lives" : "Vies restantes :",
   "gui.notsohardcore.info_screen.time_until_life_regain" : "Restauration de la prochaine vie dans :",

@@ -3,6 +3,7 @@ package fr.factionbedrock.notsohardcore.client.registry;
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.client.gui.InfoScreen;
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
+import fr.factionbedrock.notsohardcore.registry.NSHKeyBinding;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
@@ -15,7 +16,7 @@ public class NSHKeyBinds
             "key."+ NotSoHardcore.MOD_ID+".ability",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_H,
-            KeyBinding.Category.MISC
+            NSHKeyBinding.NOT_SO_HARDCORE_CATEGORY
     );
 
     public static void registerKeybinds()

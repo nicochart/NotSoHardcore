@@ -2,7 +2,7 @@
   "item.notsohardcore.shard_of_reviving" : "Shard of Reviving",
   "item.notsohardcore.shard_of_reviving.desc" : "Shard imbued with the power to return one more time after death..",
   "key.notsohardcore.ability" : "Not So Hardcore Info Menu",
-  "category.notsohardcore" : "Not So Hardcore Keybinds",
+  "key.category.notsohardcore.notsohardcore" : "Not So Hardcore Keybinds",
   "gui.notsohardcore.info_screen" : "Not So Hardcore",
   "gui.notsohardcore.info_screen.remaining_lives" : "Remaining lives :",
   "gui.notsohardcore.info_screen.time_until_life_regain" : "Next life restore in :",
