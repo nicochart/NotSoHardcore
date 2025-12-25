@@ -27,7 +27,6 @@ public class PlayerTickMixin
             player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
             lives = ServerLoadedConfig.MAX_LIVES;
         }
-        long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
         if (player.isCreative() && ServerLoadedConfig.CREATIVE_RESETS_LIFE_COUNT)
         {
             if (lives != ServerLoadedConfig.MAX_LIVES)
@@ -38,7 +37,10 @@ public class PlayerTickMixin
         else if (lives != ServerLoadedConfig.MAX_LIVES)
         {
             long currentTime = player.getServerWorld().getTime();
-            if (currentTime - liveRegainTimeMarker < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
+            long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
+            long timeDelta = currentTime - liveRegainTimeMarker;
+
+            if (timeDelta < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
@@ -47,7 +49,8 @@ public class PlayerTickMixin
             }
             else
             {
-                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
+                int livePlayerCanRegain = (int) (timeDelta / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
+                long extraTime = timeDelta - (long) livePlayerCanRegain * ServerLoadedConfig.TIME_TO_REGAIN_LIFE;
                 if (lives == 0)
                 {
                     BlockPos spawnPos = player.getSpawnPointPosition();
@@ -59,7 +62,7 @@ public class PlayerTickMixin
                     player.changeGameMode(GameMode.SURVIVAL);
                 }
                 player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, currentTime);
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, currentTime - extraTime);
             }
         }
     }
