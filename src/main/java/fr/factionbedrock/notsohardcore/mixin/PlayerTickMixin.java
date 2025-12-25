@@ -39,8 +39,9 @@ public abstract class PlayerTickMixin
             //dividing by 50 turns milliseconds into ticks
             long currentTime = NSHHelper.getCurrentTime(player, LoadedConfig.Server.USE_REALTIME_REGAIN);
             long liveRegainTimeMarker = NSHHelper.getLiveRegainTimeMarker(player, LoadedConfig.Server.USE_REALTIME_REGAIN);
+            long timeDelta = currentTime - liveRegainTimeMarker;
 
-            if (currentTime - liveRegainTimeMarker < LoadedConfig.Server.TIME_TO_REGAIN_LIFE)
+            if (timeDelta < LoadedConfig.Server.TIME_TO_REGAIN_LIFE)
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
@@ -49,14 +50,15 @@ public abstract class PlayerTickMixin
             }
             else
             {
-                int livePlayerCanRegain = (int) ((currentTime - liveRegainTimeMarker) / LoadedConfig.Server.TIME_TO_REGAIN_LIFE);
+                int livePlayerCanRegain = (int) (timeDelta / LoadedConfig.Server.TIME_TO_REGAIN_LIFE);
+                long extraTime = timeDelta - (long) livePlayerCanRegain * LoadedConfig.Server.TIME_TO_REGAIN_LIFE;
                 if (lives == 0)
                 {
                     NSHHelper.respawnPlayer(player);
                 }
                 player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(LoadedConfig.Server.MAX_LIVES, lives + livePlayerCanRegain));
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, NSHHelper.getCurrentTime(player, false));
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis());
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, NSHHelper.getCurrentTime(player, false) - extraTime);
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis() - (extraTime * 50));
             }
         }
     }
