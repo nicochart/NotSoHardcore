@@ -4,16 +4,20 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.config.NSHConfigSaver;
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import fr.factionbedrock.notsohardcore.util.NSHHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.world.GameMode;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -87,6 +91,17 @@ public final class NSHCommands
                             ctx.getSource().sendFeedback(() -> Text.literal("alwaysRenderHardcoreHearts = " + LoadedConfig.Server.ALWAYS_RENDER_HARDCORE_HEARTS), false);
                             return 1;
                         }))
+                        .then(literal("respawn")
+                            .then(argument("player", EntityArgumentType.player())
+                                .executes(context ->
+                                {
+                                    ServerPlayerEntity target = EntityArgumentType.getPlayer(context, "player");
+                                    if (target.interactionManager.getGameMode() != GameMode.SPECTATOR) {throw new SimpleCommandExceptionType(Text.translatable("commands."+ NotSoHardcore.MOD_ID+".respawn.already_alive")).create();}
+                                    NSHHelper.forceRespawnPlayer(target);
+                                    return 1;
+                                })
+                            )
+                        )
         );
     }
 

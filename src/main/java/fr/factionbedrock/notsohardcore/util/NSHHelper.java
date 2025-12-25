@@ -1,5 +1,6 @@
 package fr.factionbedrock.notsohardcore.util;
 
+import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -11,6 +12,13 @@ import java.util.Set;
 
 public class NSHHelper
 {
+    public static void forceRespawnPlayer(ServerPlayerEntity player)
+    {
+        int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
+        if (lives <= 0) {player.getDataTracker().set(NSHTrackedData.LIVES, 1);}
+        respawnPlayer(player);
+    }
+
     public static void respawnPlayer(ServerPlayerEntity player)
     {
         ServerPlayerEntity.Respawn respawn = player.getRespawn();
