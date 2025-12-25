@@ -7,5 +7,6 @@
   "gui.notsohardcore.info_screen.remaining_lives" : "Remaining lives :",
   "gui.notsohardcore.info_screen.time_until_life_regain" : "Next life restore in :",
   "gui.notsohardcore.info_screen.time_to_regain_life" : "Time to regain one life :",
-  "gui.notsohardcore.info_screen.no_life_regain_over_time" : "Lives do not restore over time"
+  "gui.notsohardcore.info_screen.no_life_regain_over_time" : "Lives do not restore over time",
+  "commands.notsohardcore.respawn.already_alive" : "This player is already alive"
 }
