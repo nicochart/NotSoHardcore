@@ -12,6 +12,7 @@ import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import fr.factionbedrock.notsohardcore.util.NSHHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.DefaultPermissions;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -30,7 +31,7 @@ public final class NSHCommands
 
     private static void registerImpl(CommandDispatcher<ServerCommandSource> dispatcher, net.minecraft.registry.RegistryWrapper.WrapperLookup registryAccess, CommandManager.RegistrationEnvironment env) {
         dispatcher.register(
-                literal("nsh").requires(src -> src.hasPermissionLevel(2))
+                literal("nsh").requires(src -> src.getPermissions().hasPermission(DefaultPermissions.GAMEMASTERS))
                         .then(literal("useRealtime")
                                 .then(argument("value", BoolArgumentType.bool())
                                         .executes(ctx -> {

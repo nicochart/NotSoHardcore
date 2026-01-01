@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(MinecraftClient.class)
 public abstract class ModifyDeathScreenMinecraftClientArgsMixin
 {
-    @ModifyArgs(method = "setScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DeathScreen;<init>(Lnet/minecraft/text/Text;Z)V"))
+    @ModifyArgs(method = "setScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DeathScreen;<init>(Lnet/minecraft/text/Text;ZLnet/minecraft/client/network/ClientPlayerEntity;)V"))
     private void modifyDeathScreenArgsInSetScreen(Args args)
     {
         MinecraftClient mc = MinecraftClient.getInstance();
