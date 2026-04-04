@@ -7,5 +7,6 @@
   "gui.notsohardcore.info_screen.remaining_lives" : "Vies restantes :",
   "gui.notsohardcore.info_screen.time_until_life_regain" : "Restauration de la prochaine vie dans :",
   "gui.notsohardcore.info_screen.time_to_regain_life" : "Temps pour restaurer une vie :",
-  "gui.notsohardcore.info_screen.no_life_regain_over_time" : "Régénération de vies désactivée."
+  "gui.notsohardcore.info_screen.no_life_regain_over_time" : "Régénération de vies désactivée.",
+  "commands.notsohardcore.respawn.already_alive" : "Ce joueur est déjà en vie"
 }
