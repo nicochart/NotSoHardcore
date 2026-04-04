@@ -1,20 +1,17 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
-import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
+import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
+import fr.factionbedrock.notsohardcore.util.NSHHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Set;
-
 @Mixin(ServerPlayerEntity.class)
-public class PlayerTickMixin
+public abstract class PlayerTickMixin
 {
     @Inject(at = @At("RETURN"), method = "tick")
     private void onTick(CallbackInfo info)
@@ -22,25 +19,27 @@ public class PlayerTickMixin
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
-        if (lives > ServerLoadedConfig.MAX_LIVES)
+        if (lives > LoadedConfig.Server.MAX_LIVES)
         {
-            player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
-            lives = ServerLoadedConfig.MAX_LIVES;
+            player.getDataTracker().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
+            lives = LoadedConfig.Server.MAX_LIVES;
         }
-        if (player.isCreative() && ServerLoadedConfig.CREATIVE_RESETS_LIFE_COUNT)
+
+        if (player.isCreative() && LoadedConfig.Server.CREATIVE_RESETS_LIFE_COUNT)
         {
-            if (lives != ServerLoadedConfig.MAX_LIVES)
+            if (lives != LoadedConfig.Server.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIVES, ServerLoadedConfig.MAX_LIVES);
+                player.getDataTracker().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
             }
         }
-        else if (lives != ServerLoadedConfig.MAX_LIVES)
+        else if (lives != LoadedConfig.Server.MAX_LIVES)
         {
-            long currentTime = player.getServerWorld().getTime();
-            long liveRegainTimeMarker = player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
+            //dividing by 50 turns milliseconds into ticks
+            long currentTime = NSHHelper.getCurrentTime(player, LoadedConfig.Server.USE_REALTIME_REGAIN);
+            long liveRegainTimeMarker = NSHHelper.getLiveRegainTimeMarker(player, LoadedConfig.Server.USE_REALTIME_REGAIN);
             long timeDelta = currentTime - liveRegainTimeMarker;
 
-            if (timeDelta < ServerLoadedConfig.TIME_TO_REGAIN_LIFE)
+            if (timeDelta < LoadedConfig.Server.TIME_TO_REGAIN_LIFE)
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
@@ -49,20 +48,15 @@ public class PlayerTickMixin
             }
             else
             {
-                int livePlayerCanRegain = (int) (timeDelta / ServerLoadedConfig.TIME_TO_REGAIN_LIFE);
-                long extraTime = timeDelta - (long) livePlayerCanRegain * ServerLoadedConfig.TIME_TO_REGAIN_LIFE;
+                int livePlayerCanRegain = (int) (timeDelta / LoadedConfig.Server.TIME_TO_REGAIN_LIFE);
+                long extraTime = timeDelta - (long) livePlayerCanRegain * LoadedConfig.Server.TIME_TO_REGAIN_LIFE;
                 if (lives == 0)
                 {
-                    BlockPos spawnPos = player.getSpawnPointPosition();
-                    ServerWorld serverWorld = player.getServerWorld();
-                    if (spawnPos == null) {spawnPos = serverWorld.getSpawnPos();}
-                    if (player.getSpawnPointDimension() != null) {serverWorld = player.server.getWorld(player.getSpawnPointDimension());}
-
-                    player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch());
-                    player.changeGameMode(GameMode.SURVIVAL);
+                    NSHHelper.respawnPlayer(player);
                 }
-                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(ServerLoadedConfig.MAX_LIVES, lives + livePlayerCanRegain));
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, currentTime - extraTime);
+                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(LoadedConfig.Server.MAX_LIVES, lives + livePlayerCanRegain));
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, NSHHelper.getCurrentTime(player, false) - extraTime);
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis() - (extraTime * 50));
             }
         }
     }

@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerNbtMixin
 {
     private static String lives = "lives";
-    private static String life_regain_time_marker = "life_regain_time_marker";
+    private static String life_regain_tick_marker = "life_regain_tick_marker";
+    private static String life_regain_realtime_marker = "life_regain_realtime_marker";
 
     @Inject(at = @At("RETURN"), method = "readCustomDataFromNbt")
     private void read(NbtCompound nbt, CallbackInfo info)
@@ -23,9 +24,13 @@ public class PlayerNbtMixin
         {
             player.getDataTracker().set(NSHTrackedData.LIVES, nbt.getInt(lives));
         }
-        if (nbt.contains(life_regain_time_marker, NbtElement.LONG_TYPE))
+        if (nbt.contains(life_regain_tick_marker, NbtElement.LONG_TYPE))
         {
-            player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, nbt.getLong(life_regain_time_marker));
+            player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, nbt.getLong(life_regain_tick_marker));
+        }
+        if (nbt.contains(life_regain_realtime_marker, NbtElement.LONG_TYPE))
+        {
+            player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, nbt.getLong(life_regain_realtime_marker));
         }
     }
 
@@ -34,6 +39,7 @@ public class PlayerNbtMixin
     {
         PlayerEntity player = (PlayerEntity) (Object) this;
         nbt.putInt(lives, player.getDataTracker().get(NSHTrackedData.LIVES));
-        nbt.putLong(life_regain_time_marker, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER));
+        nbt.putLong(life_regain_tick_marker, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER));
+        nbt.putLong(life_regain_realtime_marker, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER));
     }
 }

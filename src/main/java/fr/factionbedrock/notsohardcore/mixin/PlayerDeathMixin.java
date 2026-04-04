@@ -1,6 +1,6 @@
 package fr.factionbedrock.notsohardcore.mixin;
 
-import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
+import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,11 +18,12 @@ public class PlayerDeathMixin
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         int previousLives = player.getDataTracker().get(NSHTrackedData.LIVES);
-        if (previousLives > 0 && !player.isSpectator() && !(player.isCreative() && ServerLoadedConfig.CREATIVE_RESETS_LIFE_COUNT))
+        if (previousLives > 0 && !player.isSpectator() && !(player.isCreative() && LoadedConfig.Server.CREATIVE_RESETS_LIFE_COUNT))
         {
-            if (previousLives == ServerLoadedConfig.MAX_LIVES)
+            if (previousLives == LoadedConfig.Server.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, player.getServerWorld().getTime());
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis());
+                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, player.getEntityWorld().getTime());
             }
             player.getDataTracker().set(NSHTrackedData.LIVES, previousLives - 1);
         }
@@ -33,9 +34,13 @@ public class PlayerDeathMixin
     {
         ServerPlayerEntity newPlayer = (ServerPlayerEntity) (Object) this;
 
+        long realtimeMarker = oldPlayer.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER);
+        newPlayer.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, realtimeMarker);
+
         int lives = oldPlayer.getDataTracker().get(NSHTrackedData.LIVES);
         newPlayer.getDataTracker().set(NSHTrackedData.LIVES, lives);
-        long live_regain_timer = oldPlayer.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TIME_MARKER);
-        newPlayer.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TIME_MARKER, live_regain_timer);
+        long live_regain_timer = oldPlayer.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER);
+        newPlayer.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, live_regain_timer);
     }
+
 }

@@ -1,6 +1,6 @@
 package fr.factionbedrock.notsohardcore.item;
 
-import fr.factionbedrock.notsohardcore.config.ServerLoadedConfig;
+import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -23,7 +22,7 @@ public class ShardOfRevivingItem extends Item
 
     @Override public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
     {
-        if (user.getDataTracker().get(NSHTrackedData.LIVES) < ServerLoadedConfig.MAX_LIVES)
+        if (user.getDataTracker().get(NSHTrackedData.LIVES) < LoadedConfig.Server.MAX_LIVES)
         {
             return super.use(world, user, hand);
         }
@@ -35,7 +34,7 @@ public class ShardOfRevivingItem extends Item
         if (user instanceof PlayerEntity player)
         {
             int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
-            if (lives < ServerLoadedConfig.MAX_LIVES)
+            if (lives < LoadedConfig.Server.MAX_LIVES)
             {
                 player.getDataTracker().set(NSHTrackedData.LIVES, lives+1);
             }

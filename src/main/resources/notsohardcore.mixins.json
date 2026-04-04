@@ -8,6 +8,11 @@
 		"PlayerTickMixin",
 		"PlayerDeathMixin"
 	],
+	"client": [
+		"ModifyDeathScreenMinecraftClientArgsMixin",
+		"ModifyDeathScreenClientNetworkArgsMixin",
+		"InGameHudMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	}
