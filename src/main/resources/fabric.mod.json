@@ -16,14 +16,14 @@
 		"main": ["fr.factionbedrock.notsohardcore.NotSoHardcore"],
 		"client": ["fr.factionbedrock.notsohardcore.NotSoHardcore"]
 	},
-	"accessWidener" : "notsohardcore.accesswidener",
+	"accessWidener" : "notsohardcore.classtweaker",
 	"mixins": [
 		"notsohardcore.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.18.4",
-		"minecraft": "~1.21.11",
-		"java": ">=21",
+		"fabricloader": ">=0.18.6",
+		"minecraft": "~26.1",
+		"java": ">=25",
 		"fabric-api": "*"
 	},
 	"suggests": {
