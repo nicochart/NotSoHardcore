@@ -1,42 +1,40 @@
 package fr.factionbedrock.notsohardcore.util;
 
-import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameMode;
-
 import java.util.Set;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
 
 public class NSHHelper
 {
-    public static void forceRespawnPlayer(ServerPlayerEntity player)
+    public static void forceRespawnPlayer(ServerPlayer player)
     {
-        int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
-        if (lives <= 0) {player.getDataTracker().set(NSHTrackedData.LIVES, 1);}
+        int lives = player.getEntityData().get(NSHTrackedData.LIVES);
+        if (lives <= 0) {player.getEntityData().set(NSHTrackedData.LIVES, 1);}
         respawnPlayer(player);
     }
 
-    public static void respawnPlayer(ServerPlayerEntity player)
+    public static void respawnPlayer(ServerPlayer player)
     {
-        ServerPlayerEntity.Respawn respawn = player.getRespawn();
-        ServerWorld serverWorld = respawn != null ? player.getEntityWorld().getServer().getWorld(ServerPlayerEntity.Respawn.getDimension(respawn)) : player.getEntityWorld();
-        BlockPos spawnPos = respawn != null ? respawn.respawnData().getPos() : serverWorld.getSpawnPoint().getPos();
+        ServerPlayer.RespawnConfig respawn = player.getRespawnConfig();
+        ServerLevel serverWorld = respawn != null ? player.level().getServer().getLevel(ServerPlayer.RespawnConfig.getDimensionOrDefault(respawn)) : player.level();
+        BlockPos spawnPos = respawn != null ? respawn.respawnData().pos() : serverWorld.getRespawnData().pos();
 
-        player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch(), true);
-        player.changeGameMode(GameMode.SURVIVAL);
+        player.teleportTo(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYRot(), player.getXRot(), true);
+        player.setGameMode(GameType.SURVIVAL);
     }
 
-    public static long getCurrentTime(PlayerEntity player, boolean useRealTime)
+    public static long getCurrentTime(Player player, boolean useRealTime)
     {
-        return useRealTime ? System.currentTimeMillis() / 50L : player.getEntityWorld().getTime();
+        return useRealTime ? System.currentTimeMillis() / 50L : player.level().getGameTime();
     }
 
-    public static long getLiveRegainTimeMarker(PlayerEntity player, boolean useRealTime)
+    public static long getLiveRegainTimeMarker(Player player, boolean useRealTime)
     {
-        return useRealTime ? player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER) / 50L : player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER);
+        return useRealTime ? player.getEntityData().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER) / 50L : player.getEntityData().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER);
     }
 
     public static String getTimeStringFromTicks(long ticksToRegain)

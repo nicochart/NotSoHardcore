@@ -2,54 +2,53 @@ package fr.factionbedrock.notsohardcore.item;
 
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.Level;
 
 public class ShardOfRevivingItem extends Item
 {
-    public ShardOfRevivingItem(Settings settings) {super(settings);}
+    public ShardOfRevivingItem(Properties settings) {super(settings);}
 
-    @Override public ActionResult use(World world, PlayerEntity user, Hand hand)
+    @Override public InteractionResult use(Level world, Player user, InteractionHand hand)
     {
-        if (user.getDataTracker().get(NSHTrackedData.LIVES) < LoadedConfig.Server.MAX_LIVES)
+        if (user.getEntityData().get(NSHTrackedData.LIVES) < LoadedConfig.Server.MAX_LIVES)
         {
             return super.use(world, user, hand);
         }
-        else {return ActionResult.PASS;}
+        else {return InteractionResult.PASS;}
     }
 
-    @Override public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user)
+    @Override public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user)
     {
-        if (user instanceof PlayerEntity player)
+        if (user instanceof Player player)
         {
-            int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
+            int lives = player.getEntityData().get(NSHTrackedData.LIVES);
             if (lives < LoadedConfig.Server.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIVES, lives+1);
+                player.getEntityData().set(NSHTrackedData.LIVES, lives+1);
             }
         }
-        return super.finishUsing(stack, world, user);
+        return super.finishUsingItem(stack, world, user);
     }
 
-    @Override public void appendTooltip(ItemStack stack, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type)
+    @Override public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type)
     {
-        textConsumer.accept(this.getDescription().formatted(Formatting.GRAY));
+        textConsumer.accept(this.getDescription().withStyle(ChatFormatting.GRAY));
     }
 
-    public MutableText getDescription()
+    public MutableComponent getDescription()
     {
-        return Text.translatable(this.getTranslationKey() + ".desc");
+        return Component.translatable(this.getDescriptionId() + ".desc");
     }
 }

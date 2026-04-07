@@ -3,27 +3,26 @@ package fr.factionbedrock.notsohardcore.mixin;
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import fr.factionbedrock.notsohardcore.util.NSHHelper;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.GameMode;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.GameType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerPlayerEntity.class)
+@Mixin(ServerPlayer.class)
 public abstract class PlayerTickMixin
 {
     @Inject(at = @At("RETURN"), method = "tick")
     private void onTick(CallbackInfo info)
     {
-        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+        ServerPlayer player = (ServerPlayer) (Object) this;
 
-        int lives = player.getDataTracker().get(NSHTrackedData.LIVES);
+        int lives = player.getEntityData().get(NSHTrackedData.LIVES);
         if (lives > LoadedConfig.Server.MAX_LIVES)
         {
-            player.getDataTracker().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
+            player.getEntityData().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
             lives = LoadedConfig.Server.MAX_LIVES;
         }
 
@@ -31,7 +30,7 @@ public abstract class PlayerTickMixin
         {
             if (lives != LoadedConfig.Server.MAX_LIVES)
             {
-                player.getDataTracker().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
+                player.getEntityData().set(NSHTrackedData.LIVES, LoadedConfig.Server.MAX_LIVES);
             }
         }
         else if (lives != LoadedConfig.Server.MAX_LIVES)
@@ -45,7 +44,7 @@ public abstract class PlayerTickMixin
             {
                 if (lives == 0 && !player.isSpectator() && !player.isCreative())
                 {
-                    player.changeGameMode(GameMode.SPECTATOR);
+                    player.setGameMode(GameType.SPECTATOR);
                 }
             }
             else
@@ -56,9 +55,9 @@ public abstract class PlayerTickMixin
                 {
                     NSHHelper.respawnPlayer(player);
                 }
-                player.getDataTracker().set(NSHTrackedData.LIVES, Math.min(LoadedConfig.Server.MAX_LIVES, lives + livePlayerCanRegain));
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, NSHHelper.getCurrentTime(player, false) - extraTime);
-                player.getDataTracker().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis() - (extraTime * 50));
+                player.getEntityData().set(NSHTrackedData.LIVES, Math.min(LoadedConfig.Server.MAX_LIVES, lives + livePlayerCanRegain));
+                player.getEntityData().set(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, NSHHelper.getCurrentTime(player, false) - extraTime);
+                player.getEntityData().set(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, System.currentTimeMillis() - (extraTime * 50));
             }
         }
     }

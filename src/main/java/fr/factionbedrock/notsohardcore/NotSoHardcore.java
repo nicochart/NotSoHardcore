@@ -10,8 +10,7 @@ import fr.factionbedrock.notsohardcore.registry.NSHItems;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,5 +39,5 @@ public class NotSoHardcore implements ModInitializer, ClientModInitializer
 		NSHClientNetworking.registerClientReceiver();
 	}
 
-	public static Identifier id(String path) {return Identifier.of(MOD_ID, path);}
+	public static Identifier id(String path) {return Identifier.fromNamespaceAndPath(MOD_ID, path);}
 }
