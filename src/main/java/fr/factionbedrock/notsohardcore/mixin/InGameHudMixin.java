@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(Gui.class)
 public abstract class InGameHudMixin
 {
-    @ModifyVariable(method = "renderHearts", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/storage/LevelData;isHardcore()Z"), ordinal = 1)
+    @ModifyVariable(method = "extractHearts", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/storage/LevelData;isHardcore()Z"), ordinal = 1)
     private boolean forceHardcoreHearts(boolean original)
     {
         return LoadedConfig.Server.ALWAYS_RENDER_HARDCORE_HEARTS || original;

@@ -15,8 +15,8 @@ public class NSHNetworking
 {
     public static void registerData()
     {
-        PayloadTypeRegistry.playC2S().register(NSHS2CSynchData.ID, NSHS2CSynchData.CODEC);
-        PayloadTypeRegistry.playS2C().register(NSHS2CSynchData.ID, NSHS2CSynchData.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(NSHS2CSynchData.ID, NSHS2CSynchData.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(NSHS2CSynchData.ID, NSHS2CSynchData.CODEC);
     }
 
     public static void sendS2CSync(@Nullable MinecraftServer server)

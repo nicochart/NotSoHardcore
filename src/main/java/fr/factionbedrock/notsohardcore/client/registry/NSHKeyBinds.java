@@ -6,7 +6,7 @@ import fr.factionbedrock.notsohardcore.client.gui.InfoScreen;
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHKeyBinding;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
@@ -21,7 +21,7 @@ public class NSHKeyBinds
 
     public static void registerKeybinds()
     {
-        KeyBindingHelper.registerKeyBinding(TEST_ABILITY_KEY);
+        KeyMappingHelper.registerKeyMapping(TEST_ABILITY_KEY);
     }
 
     public static void registerPressedInteractions()
