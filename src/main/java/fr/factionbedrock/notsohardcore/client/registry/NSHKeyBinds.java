@@ -30,7 +30,7 @@ public class NSHKeyBinds
             while (TEST_ABILITY_KEY.consumeClick()) {
                 if (client.player != null)
                 {
-                    client.setScreen(new InfoScreen(client.player, LoadedConfig.Server.MAX_LIVES, LoadedConfig.Server.TIME_TO_REGAIN_LIFE, LoadedConfig.Server.USE_REALTIME_REGAIN));
+                    client.setScreenAndShow(new InfoScreen(client.player, LoadedConfig.Server.MAX_LIVES, LoadedConfig.Server.TIME_TO_REGAIN_LIFE, LoadedConfig.Server.USE_REALTIME_REGAIN));
                 }
             }
         });
