@@ -6,7 +6,8 @@
     "PlayerDataTrackerMixin",
     "PlayerNbtMixin",
     "PlayerTickMixin",
-    "PlayerDeathMixin"
+    "PlayerDeathMixin",
+    "HardcoreRespawnRedirectMixin"
   ],
   "client": [
     "ModifyDeathScreenMinecraftClientArgsMixin",
