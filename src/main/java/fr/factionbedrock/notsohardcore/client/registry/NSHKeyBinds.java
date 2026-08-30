@@ -1,20 +1,20 @@
 package fr.factionbedrock.notsohardcore.client.registry;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.client.gui.InfoScreen;
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHKeyBinding;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
 public class NSHKeyBinds
 {
-    public static final KeyBinding TEST_ABILITY_KEY = new KeyBinding(
+    public static final KeyMapping TEST_ABILITY_KEY = new KeyMapping(
             "key."+ NotSoHardcore.MOD_ID+".ability",
-            InputUtil.Type.KEYSYM,
+            InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_H,
             NSHKeyBinding.NOT_SO_HARDCORE_CATEGORY
     );
@@ -27,7 +27,7 @@ public class NSHKeyBinds
     public static void registerPressedInteractions()
     {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (TEST_ABILITY_KEY.wasPressed()) {
+            while (TEST_ABILITY_KEY.consumeClick()) {
                 if (client.player != null)
                 {
                     client.setScreen(new InfoScreen(client.player, LoadedConfig.Server.MAX_LIVES, LoadedConfig.Server.TIME_TO_REGAIN_LIFE, LoadedConfig.Server.USE_REALTIME_REGAIN));

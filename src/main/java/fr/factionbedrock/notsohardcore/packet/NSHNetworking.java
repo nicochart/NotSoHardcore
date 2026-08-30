@@ -6,7 +6,7 @@ import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,18 +25,18 @@ public class NSHNetworking
         {
             NotSoHardcore.LOGGER.error("NSH ERROR - Tried to send S2C Sync from null Minecraft Server !");
         }
-        else {sendS2CSync(server.getPlayerManager().getPlayerList());}
+        else {sendS2CSync(server.getPlayerList().getPlayers());}
     }
 
-    public static void sendS2CSync(List<ServerPlayerEntity> players)
+    public static void sendS2CSync(List<ServerPlayer> players)
     {
-        for (ServerPlayerEntity player : players) {sendS2CSync(player);}
+        for (ServerPlayer player : players) {sendS2CSync(player);}
     }
 
-    public static void sendS2CSync(ServerPlayerEntity player)
+    public static void sendS2CSync(ServerPlayer player)
     {
         //The packet is sent from server, so calling LoadedConfig.Local or LoadedConfig.Server is the same.
-        ServerPlayNetworking.send(player, new NSHS2CSynchData("sync_nsh_data", LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, player.getDataTracker().get(NSHTrackedData.LIVES), player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER), LoadedConfig.Local.USE_REALTIME_REGAIN, player.getDataTracker().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER), LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS));
+        ServerPlayNetworking.send(player, new NSHS2CSynchData("sync_nsh_data", LoadedConfig.Local.MAX_LIVES, LoadedConfig.Local.TIME_TO_REGAIN_LIFE, LoadedConfig.Local.CREATIVE_RESETS_LIFE_COUNT, player.getEntityData().get(NSHTrackedData.LIVES), player.getEntityData().get(NSHTrackedData.LIFE_REGAIN_TICK_MARKER), LoadedConfig.Local.USE_REALTIME_REGAIN, player.getEntityData().get(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER), LoadedConfig.Local.ALWAYS_RENDER_HARDCORE_HEARTS));
     }
 
     public static void registerServerReceiver()
