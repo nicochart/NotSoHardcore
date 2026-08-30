@@ -5,7 +5,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameMode;
 
 import java.util.Set;
 
@@ -26,7 +25,7 @@ public class NSHHelper
         if (player.getSpawnPointDimension() != null) {serverWorld = player.server.getWorld(player.getSpawnPointDimension());}
 
         player.teleport(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYaw(), player.getPitch());
-        player.changeGameMode(GameMode.SURVIVAL);
+        player.changeGameMode(serverWorld.getServer().getDefaultGameMode());
     }
 
     public static long getCurrentTime(PlayerEntity player, boolean useRealTime)
