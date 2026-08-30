@@ -24,7 +24,7 @@ public class NSHHelper
         BlockPos spawnPos = respawn != null ? respawn.respawnData().pos() : serverWorld.getRespawnData().pos();
 
         player.teleportTo(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYRot(), player.getXRot(), true);
-        player.setGameMode(GameType.SURVIVAL);
+        player.setGameMode(player.level().getServer().getDefaultGameType());
     }
 
     public static long getCurrentTime(Player player, boolean useRealTime)
