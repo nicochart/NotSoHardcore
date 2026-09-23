@@ -8,26 +8,25 @@ import fr.factionbedrock.notsohardcore.registry.NSHKeyBinding;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
-import org.lwjgl.glfw.GLFW;
 
 public class NSHKeyBinds
 {
-    public static final KeyMapping TEST_ABILITY_KEY = new KeyMapping(
+    public static final KeyMapping INFO_MENU_KEY = new KeyMapping(
             "key."+ NotSoHardcore.MOD_ID+".ability",
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_H,
+            InputConstants.Type.KEYBOARD,
+            InputConstants.KEY_H,
             NSHKeyBinding.NOT_SO_HARDCORE_CATEGORY
     );
 
     public static void registerKeybinds()
     {
-        KeyMappingHelper.registerKeyMapping(TEST_ABILITY_KEY);
+        KeyMappingHelper.registerKeyMapping(INFO_MENU_KEY);
     }
 
     public static void registerPressedInteractions()
     {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (TEST_ABILITY_KEY.consumeClick()) {
+            while (INFO_MENU_KEY.consumeClick()) {
                 if (client.player != null)
                 {
                     client.setScreenAndShow(new InfoScreen(client.player, LoadedConfig.Server.MAX_LIVES, LoadedConfig.Server.TIME_TO_REGAIN_LIFE, LoadedConfig.Server.USE_REALTIME_REGAIN));
