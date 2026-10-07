@@ -13,8 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerDataTrackerMixin
 {
 	@Inject(at = @At("RETURN"), method = "defineSynchedData")
-	private void init(SynchedEntityData.Builder builder, CallbackInfo info)
+	private void init(CallbackInfo info)
 	{
+		SynchedEntityData builder = ((Player) (Object) this).getEntityData();
 		builder.define(NSHTrackedData.LIVES, LoadedConfig.Local.MAX_LIVES);
 		builder.define(NSHTrackedData.LIFE_REGAIN_TICK_MARKER, (long)0);
 		builder.define(NSHTrackedData.LIFE_REGAIN_REALTIME_MARKER, 0L);

@@ -1,27 +1,38 @@
 package fr.factionbedrock.notsohardcore.packet;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
-public record NSHS2CSynchData(String name, int max_lives, int time_to_regain_life, boolean creative_resets_life_count, int lives, long live_regain_time_marker, boolean use_realtime, long live_regain_realtime_time_marker, boolean always_render_hardcore_hearts) implements CustomPacketPayload
+public record NSHS2CSynchData(String name, int max_lives, int time_to_regain_life, boolean creative_resets_life_count, int lives, long live_regain_time_marker, boolean use_realtime, long live_regain_realtime_time_marker, boolean always_render_hardcore_hearts)
 {
-    public static final Type<NSHS2CSynchData> ID = new Type<>(NotSoHardcore.id("s2c_sync_data"));
+    public static final ResourceLocation ID = NotSoHardcore.id("s2c_sync_data");
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, NSHS2CSynchData> CODEC = StreamCodec.composite(
-            ByteBufCodecs.STRING_UTF8, NSHS2CSynchData::name,
-            ByteBufCodecs.VAR_INT, NSHS2CSynchData::max_lives,
-            ByteBufCodecs.VAR_INT, NSHS2CSynchData::time_to_regain_life,
-            ByteBufCodecs.BOOL, NSHS2CSynchData::creative_resets_life_count,
-            ByteBufCodecs.VAR_INT, NSHS2CSynchData::lives,
-            ByteBufCodecs.VAR_LONG, NSHS2CSynchData::live_regain_time_marker,
-            ByteBufCodecs.BOOL, NSHS2CSynchData::use_realtime,
-            ByteBufCodecs.VAR_LONG, NSHS2CSynchData::live_regain_realtime_time_marker,
-            ByteBufCodecs.BOOL, NSHS2CSynchData::always_render_hardcore_hearts,
-            NSHS2CSynchData::new
-    );
+    public void encode(FriendlyByteBuf buf)
+    {
+        buf.writeUtf(this.name);
+        buf.writeVarInt(this.max_lives);
+        buf.writeVarInt(this.time_to_regain_life);
+        buf.writeBoolean(this.creative_resets_life_count);
+        buf.writeVarInt(this.lives);
+        buf.writeVarLong(this.live_regain_time_marker);
+        buf.writeBoolean(this.use_realtime);
+        buf.writeVarLong(this.live_regain_realtime_time_marker);
+        buf.writeBoolean(this.always_render_hardcore_hearts);
+    }
 
-    @Override public Type<? extends CustomPacketPayload> type() {return ID;}
+    public static NSHS2CSynchData decode(FriendlyByteBuf buf)
+    {
+        return new NSHS2CSynchData(
+                buf.readUtf(),
+                buf.readVarInt(),
+                buf.readVarInt(),
+                buf.readBoolean(),
+                buf.readVarInt(),
+                buf.readVarLong(),
+                buf.readBoolean(),
+                buf.readVarLong(),
+                buf.readBoolean()
+        );
+    }
 }

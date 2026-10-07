@@ -1,7 +1,9 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "fr.factionbedrock.notsohardcore.mixin",
-  "compatibilityLevel": "JAVA_25",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "notsohardcore.refmap.json",
   "mixins": [
     "PlayerDataTrackerMixin",
     "PlayerNbtMixin",

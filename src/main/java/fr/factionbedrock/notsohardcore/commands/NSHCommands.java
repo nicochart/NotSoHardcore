@@ -11,14 +11,15 @@ import fr.factionbedrock.notsohardcore.config.NSHConfigSaver;
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
 import fr.factionbedrock.notsohardcore.util.NSHHelper;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.level.GameType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -27,11 +28,11 @@ public final class NSHCommands
 {
     private NSHCommands() {}
 
-    public static void register() {CommandRegistrationCallback.EVENT.register(NSHCommands::registerImpl);}
+    public static void register() {MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> registerImpl(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection()));}
 
-    private static void registerImpl(CommandDispatcher<CommandSourceStack> dispatcher, net.minecraft.core.HolderLookup.Provider registryAccess, Commands.CommandSelection env) {
+    private static void registerImpl(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection env) {
         dispatcher.register(
-                literal("nsh").requires(src -> src.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
+                literal("nsh").requires(src -> src.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(literal("useRealtime")
                                 .then(argument("value", BoolArgumentType.bool())
                                         .executes(ctx -> {

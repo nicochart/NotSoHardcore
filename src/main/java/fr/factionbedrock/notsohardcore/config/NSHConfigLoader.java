@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,7 +15,7 @@ import java.nio.file.Path;
 public class NSHConfigLoader
 {
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    protected static final Path CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve(NotSoHardcore.MOD_ID);
+    protected static final Path CONFIG_FOLDER = FMLPaths.CONFIGDIR.get().resolve(NotSoHardcore.MOD_ID);
     protected static final Path CONFIG_PATH = CONFIG_FOLDER.resolve("config.json");
 
     public static NSHConfig loadConfig()

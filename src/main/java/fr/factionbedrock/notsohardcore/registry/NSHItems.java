@@ -2,16 +2,21 @@ package fr.factionbedrock.notsohardcore.registry;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.item.*;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class NSHItems
 {
-    public static final Item SHARD_OF_REVIVING = register(Keys.SHARD_OF_REVIVING.identifier().getPath(), new ShardOfRevivingItem(new Item.Properties().setId(Keys.SHARD_OF_REVIVING).food(Foods.GOLDEN_APPLE)));
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, NotSoHardcore.MOD_ID);
+
+    public static final RegistryObject<Item> SHARD_OF_REVIVING = register(Keys.SHARD_OF_REVIVING.location().getPath(), () -> new ShardOfRevivingItem(new Item.Properties().food(Foods.GOLDEN_APPLE)));
 
     public static class Keys
     {
@@ -23,7 +28,7 @@ public class NSHItems
         }
     }
 
-    public static <T extends Item> T register(String name, T item) {return Registry.register(BuiltInRegistries.ITEM, NotSoHardcore.id(name), item);}
+    public static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {return ITEMS.register(name, item);}
 
-    public static void load() {}
+    public static void load(IEventBus modEventBus) {ITEMS.register(modEventBus);}
 }

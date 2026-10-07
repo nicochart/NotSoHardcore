@@ -1,9 +1,8 @@
 package fr.factionbedrock.notsohardcore.registry;
 
 import fr.factionbedrock.notsohardcore.NotSoHardcore;
-import net.minecraft.client.KeyMapping;
 
 public class NSHKeyBinding
 {
-    public static final KeyMapping.Category NOT_SO_HARDCORE_CATEGORY = KeyMapping.Category.register(NotSoHardcore.id("notsohardcore"));
+    public static final String NOT_SO_HARDCORE_CATEGORY = "key.category." + NotSoHardcore.MOD_ID + ".notsohardcore";
 }

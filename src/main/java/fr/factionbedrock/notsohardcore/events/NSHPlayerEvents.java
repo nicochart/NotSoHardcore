@@ -2,18 +2,18 @@ package fr.factionbedrock.notsohardcore.events;
 
 import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class NSHPlayerEvents
 {
     public static void registerPlayerEvents()
     {
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
+        MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) ->
         {
-            ServerPlayer player = handler.getPlayer();
+            ServerPlayer player = (ServerPlayer) event.getEntity();
             NSHNetworking.sendS2CSync(player);
         });
 
