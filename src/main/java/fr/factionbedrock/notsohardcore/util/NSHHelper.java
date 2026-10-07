@@ -19,11 +19,11 @@ public class NSHHelper
 
     public static void respawnPlayer(ServerPlayer player)
     {
-        ServerPlayer.RespawnConfig respawn = player.getRespawnConfig();
-        ServerLevel serverWorld = respawn != null ? player.level().getServer().getLevel(ServerPlayer.RespawnConfig.getDimensionOrDefault(respawn)) : player.level();
-        BlockPos spawnPos = respawn != null ? respawn.respawnData().pos() : serverWorld.getRespawnData().pos();
+        BlockPos respawn = player.getRespawnPosition();
+        ServerLevel serverWorld = respawn != null ? player.level().getServer().getLevel(player.getRespawnDimension()) : player.serverLevel();
+        BlockPos spawnPos = respawn != null ? respawn : serverWorld.getSharedSpawnPos();
 
-        player.teleportTo(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYRot(), player.getXRot(), true);
+        player.teleportTo(serverWorld, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), Set.of(), player.getYRot(), player.getXRot());
         player.setGameMode(player.level().getServer().getDefaultGameType());
     }
 

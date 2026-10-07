@@ -1,16 +1,15 @@
 package fr.factionbedrock.notsohardcore.client.packet;
 
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
-import fr.factionbedrock.notsohardcore.packet.NSHS2CSynchData;
+import fr.factionbedrock.notsohardcore.packet.NSHNetworking;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 
 public class NSHClientNetworking
 {
     public static void registerClientReceiver()
     {
-        ClientPlayNetworking.registerGlobalReceiver(NSHS2CSynchData.ID, (payload, context) ->
+        NSHNetworking.registerClientReceiver((payload, context) ->
         {
             if (payload.name().equals("sync_nsh_data"))
             {

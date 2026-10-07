@@ -2,31 +2,31 @@ package fr.factionbedrock.notsohardcore.item;
 
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHTrackedData;
-import java.util.function.Consumer;
+import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public class ShardOfRevivingItem extends Item
 {
     public ShardOfRevivingItem(Properties settings) {super(settings);}
 
-    @Override public InteractionResult use(Level world, Player user, InteractionHand hand)
+    @Override public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand)
     {
         if (user.getEntityData().get(NSHTrackedData.LIVES) < LoadedConfig.Server.MAX_LIVES)
         {
             return super.use(world, user, hand);
         }
-        else {return InteractionResult.PASS;}
+        else {return InteractionResultHolder.pass(user.getItemInHand(hand));}
     }
 
     @Override public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user)
@@ -42,9 +42,9 @@ public class ShardOfRevivingItem extends Item
         return super.finishUsingItem(stack, world, user);
     }
 
-    @Override public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type)
+    @Override public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag type)
     {
-        textConsumer.accept(this.getDescription().withStyle(ChatFormatting.GRAY));
+        tooltip.add(this.getDescription().withStyle(ChatFormatting.GRAY));
     }
 
     public MutableComponent getDescription()

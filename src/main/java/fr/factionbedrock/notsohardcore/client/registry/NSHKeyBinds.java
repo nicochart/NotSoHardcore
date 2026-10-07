@@ -5,31 +5,36 @@ import fr.factionbedrock.notsohardcore.NotSoHardcore;
 import fr.factionbedrock.notsohardcore.client.gui.InfoScreen;
 import fr.factionbedrock.notsohardcore.config.LoadedConfig;
 import fr.factionbedrock.notsohardcore.registry.NSHKeyBinding;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 
 public class NSHKeyBinds
 {
     public static final KeyMapping INFO_MENU_KEY = new KeyMapping(
             "key."+ NotSoHardcore.MOD_ID+".ability",
-            InputConstants.Type.KEYBOARD,
+            InputConstants.Type.KEYSYM,
             InputConstants.KEY_H,
             NSHKeyBinding.NOT_SO_HARDCORE_CATEGORY
     );
 
-    public static void registerKeybinds()
+    public static void registerKeybinds(IEventBus modEventBus)
     {
-        KeyMappingHelper.registerKeyMapping(INFO_MENU_KEY);
+        modEventBus.addListener((RegisterKeyMappingsEvent event) -> event.register(INFO_MENU_KEY));
     }
 
     public static void registerPressedInteractions()
     {
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+        MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
+            if (event.phase != TickEvent.Phase.END) return;
+            Minecraft client = Minecraft.getInstance();
             while (INFO_MENU_KEY.consumeClick()) {
                 if (client.player != null)
                 {
-                    client.setScreenAndShow(new InfoScreen(client.player, LoadedConfig.Server.MAX_LIVES, LoadedConfig.Server.TIME_TO_REGAIN_LIFE, LoadedConfig.Server.USE_REALTIME_REGAIN));
+                    client.setScreen(new InfoScreen(client.player, LoadedConfig.Server.MAX_LIVES, LoadedConfig.Server.TIME_TO_REGAIN_LIFE, LoadedConfig.Server.USE_REALTIME_REGAIN));
                 }
             }
         });
